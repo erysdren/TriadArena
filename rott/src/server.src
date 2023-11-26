@@ -1,0 +1,15 @@
+#pragma target fte
+#define SSQC
+#pragma progs_dat "../progs.dat"
+
+#includelist
+
+	shared/fteextensions.qc
+	shared/defs.qc
+	shared/wad.qc
+
+	server/defs.qc
+	server/player.qc
+	server/main.qc
+
+#endlist

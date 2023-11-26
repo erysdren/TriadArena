@@ -1,0 +1,14 @@
+#pragma target fte
+#define CSQC
+#pragma progs_dat "../csprogs.dat"
+
+#includelist
+
+	shared/fteextensions.qc
+	shared/defs.qc
+	shared/wad.qc
+
+	client/defs.qc
+	client/main.qc
+
+#endlist
