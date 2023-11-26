@@ -37,6 +37,14 @@ void ClientConnect(void)
 void PutClientInServer(void)
 {
 	player_spawn();
+
+	print("\n\nOPENING WAD!!\n");
+	wad_t *wad = wad_open("data/darkwar.wad");
+	if (wad == __NULL__)
+		print("FAILED TO OPEN WAD!!\n");
+	else
+		wad_close(wad);
+	print("CLOSED WAD!!\n\n\n");
 }
 
 void ClientDisconnect(void)
