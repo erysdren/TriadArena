@@ -10,6 +10,7 @@
 	darkwar/wad.qc
 	darkwar/rtl.qc
 	darkwar/tables.qc
+	darkwar/rott_map.qc
 
 	client/defs.qc
 	client/main.qc

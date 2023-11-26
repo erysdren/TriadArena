@@ -10,9 +10,12 @@
 	darkwar/wad.qc
 	darkwar/rtl.qc
 	darkwar/tables.qc
+	darkwar/rott_map.qc
 
 	server/defs.qc
 	server/player.qc
 	server/main.qc
+
+	server/worldspawn.qc
 
 #endlist

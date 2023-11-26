@@ -1,8 +1,10 @@
 
 const vector PLAYER_MIN_SIZE = [-8, -8, -32];
 const vector PLAYER_MAX_SIZE = [8, 8, 16];
-const vector PLAYER_DEFAULT_VIEW_OFFSET = [0, 0, 40];
+const vector PLAYER_DEFAULT_VIEW_OFFSET = [0, 0, 8];
 const float PLAYER_DEFAULT_HEALTH = 100;
+
+#define NULL __NULL__
 
 typedef __uint uint32_t;
 typedef __int int32_t;
