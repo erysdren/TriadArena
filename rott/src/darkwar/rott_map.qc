@@ -61,7 +61,7 @@ int add_cube(entity ent, vector pos, string texture)
 	faces[5].tdir = [0, 0, -1];
 	faces[5].tbias = 0;
 
-	return brush_create(ent.modelindex, faces, 6, CONTENT_SOLID);
+	return brush_create(ent.modelindex, faces, 6, CONTENTBIT_SOLID);
 }
 
 void make_rott_map(entity ent, int map)
