@@ -45,42 +45,42 @@ rtl_t *rtl_open(string filename)
 	if (!(file = fopen(filename, FILE_READ)))
 	{
 		print("RTL ERROR: Couldn't open ", filename, "!\n");
-		return __NULL__;
+		return NULL;
 	}
 
 	// read magic
 	if (fread(file, (void *)&magic, sizeof(uint32_t)) != sizeof(uint32_t))
 	{
 		print("RTL ERROR: Couldn't read bytes from file!\n");
-		return __NULL__;
+		return NULL;
 	}
 
 	// test magic
 	if (magic != RTL_MAGIC && magic != RTC_MAGIC)
 	{
 		print("WAD ERROR: ", filename, " does not have the RTL or RTC header!\n");
-		return __NULL__;
+		return NULL;
 	}
 
 	// read version
 	if (fread(file, (void *)&version, sizeof(uint32_t)) != sizeof(uint32_t))
 	{
 		print("RTL ERROR: Couldn't read bytes from file!\n");
-		return __NULL__;
+		return NULL;
 	}
 
 	// test version
 	if (version != RTL_VERSION)
 	{
 		print("RTL ERROR: ", filename, " is not the correct RTL version!\n");
-		return __NULL__;
+		return NULL;
 	}
 
 	// allocate rtl structure
 	if (!(rtl = memalloc(sizeof(rtl_t))))
 	{
 		print("RTL ERROR: Couldn't allocate RTL structure!\n");
-		return __NULL__;
+		return NULL;
 	}
 
 	// read maps
