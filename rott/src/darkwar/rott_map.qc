@@ -40,11 +40,11 @@ int add_cube(entity ent, vector pos, string texture)
 	faces[1].sbias = 0;
 	faces[2].sdir = [1, 0, 0];
 	faces[2].sbias = 0;
-	faces[3].sdir = [1, 0, 0];
+	faces[3].sdir = [0, 1, 0];
 	faces[3].sbias = 0;
 	faces[4].sdir = [1, 0, 0];
 	faces[4].sbias = 0;
-	faces[5].sdir = [0, 1, 0];
+	faces[5].sdir = [1, 0, 0];
 	faces[5].sbias = 0;
 
 	// assign v
@@ -54,11 +54,11 @@ int add_cube(entity ent, vector pos, string texture)
 	faces[1].tbias = 0;
 	faces[2].tdir = [0, -1, 0];
 	faces[2].tbias = 0;
-	faces[3].tdir = [0, -1, 0];
+	faces[3].tdir = [0, 0, -1];
 	faces[3].tbias = 0;
 	faces[4].tdir = [0, 0, -1];
 	faces[4].tbias = 0;
-	faces[5].tdir = [0, 0, -1];
+	faces[5].tdir = [0, -1, 0];
 	faces[5].tbias = 0;
 
 	return brush_create(ent.modelindex, faces, 6, CONTENTBIT_SOLID);
