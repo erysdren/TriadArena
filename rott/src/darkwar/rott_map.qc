@@ -4,10 +4,9 @@ static const vector cardinal_planes[6] = {
 	[-1, 0, 0], [0, -1, 0], [0, 0, -1],
 };
 
-int add_cube(entity ent, vector pos, string texture)
+int add_cube(entity ent, vector pos, vector brush_size, string texture)
 {
 	brushface_t faces[6];
-	vector brush_size = [64, 64, 64];
 	vector brush_min = [brush_size.x * pos.x, brush_size.y * pos.y, brush_size.z * pos.z];
 	vector brush_max = brush_min + brush_size;
 
@@ -90,9 +89,12 @@ void make_rott_map(entity ent, int map)
 				continue;
 
 			// add cube brush
-			add_cube(ent, [x, y, 0], darkwar_wall_tiles[wall]);
+			add_cube(ent, [x, y, 0], [64, 64, 64], darkwar_wall_tiles[wall]);
 		}
 	}
+
+	// add floor
+	add_cube(ent, [0, 0, -1], [64 * 256, 64 * 256, 64], "FLRCL6");
 
 	// close rtl and free walls buffer
 	rtl_close(rtl);
