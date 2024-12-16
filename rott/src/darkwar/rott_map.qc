@@ -63,14 +63,31 @@ int add_cube(entity ent, vector pos, vector brush_size, string texture)
 	return brush_create(ent.modelindex, faces, 6, CONTENTBIT_SOLID);
 }
 
+// convert level height from tilemap index (sprites plane)
+static int convert_level_height(int in)
+{
+	if (in >= 90 && in <= 97)
+		return in - 89;
+	else if (in >= 450 && in <= 457)
+		return in - 449;
+	else
+		return -1;
+}
+
 void make_rott_map(entity ent, int map)
 {
 	// open rtl and allocate walls buffer
 	rtl_t *rtl = rtl_open("darkwar.rtl");
 	void *walls = memalloc(RTL_MAP_PLANE_SIZE);
+	void *sprites = memalloc(RTL_MAP_PLANE_SIZE);
 
-	// read walls
-	rtl_read_map_planes(rtl, map, walls, NULL, NULL);
+	// read walls and sprites
+	rtl_read_map_planes(rtl, map, walls, sprites, NULL);
+
+	// get level z height
+	int level_height = 1;
+	memcpy((void *)&level_height, sprites, 2);
+	level_height = convert_level_height(level_height);
 
 	// create brushes from walls
 	for (int y = 0; y < RTL_MAP_HEIGHT; y++)
@@ -89,7 +106,7 @@ void make_rott_map(entity ent, int map)
 				continue;
 
 			// add cube brush
-			add_cube(ent, [x, y, 0], [64, 64, 64], darkwar_wall_tiles[wall]);
+			add_cube(ent, [x, y, 0], [64, 64, 64 * level_height], darkwar_wall_tiles[wall]);
 		}
 	}
 
@@ -99,4 +116,5 @@ void make_rott_map(entity ent, int map)
 	// close rtl and free walls buffer
 	rtl_close(rtl);
 	memfree(walls);
+	memfree(sprites);
 }
