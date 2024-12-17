@@ -4,9 +4,47 @@ static const vector cardinal_planes[6] = {
 	[-1, 0, 0], [0, -1, 0], [0, 0, -1],
 };
 
+static void generate_texcoords(brushface_t *face, vector brush_min, vector brush_max)
+{
+	vector scorner = [0, 0, 0], tcorner = [0, 0, 0];
+
+	// reset everything
+	face->sdir = [0, 0, 0];
+	face->sbias = 0;
+	face->tdir = [0, 0, 0];
+	face->tbias = 0;
+
+	// get absolute normals
+	float a = fabs(face->planenormal.x);
+	float b = fabs(face->planenormal.y);
+	float c = fabs(face->planenormal.z);
+
+	// sdir
+	if (a >= b && a >= c)
+		face->sdir.y = 1;
+	else
+		face->sdir.x = 1;
+
+	// tdir
+	if (c > a && c > b)
+		face->tdir.y = -1;
+	else
+		face->tdir.z = -1;
+
+	// biases
+	for (int i = 0; i < 3; i++)
+	{
+		scorner[i] = (face->sdir[i] > 0) ? brush_min[i] : brush_max[i];
+		tcorner[i] = (face->tdir[i] > 0) ? brush_min[i] : brush_max[i];
+	}
+
+	face->sbias = scorner * face->sdir;
+	face->tbias = tcorner * face->tdir;
+}
+
 int add_cube(entity ent, vector pos, vector brush_size, string texture)
 {
-	brushface_t faces[6];
+	static brushface_t faces[6];
 	vector brush_min = [brush_size.x * pos.x, brush_size.y * pos.y, brush_size.z * pos.z];
 	vector brush_max = brush_min + brush_size;
 
@@ -32,33 +70,9 @@ int add_cube(entity ent, vector pos, vector brush_size, string texture)
 	faces[5].planenormal = cardinal_planes[5];
 	faces[5].planedist = -brush_min.z;
 
-	// assign u
-	faces[0].sdir = [0, 1, 0];
-	faces[0].sbias = 0;
-	faces[1].sdir = [1, 0, 0];
-	faces[1].sbias = 0;
-	faces[2].sdir = [1, 0, 0];
-	faces[2].sbias = 0;
-	faces[3].sdir = [0, 1, 0];
-	faces[3].sbias = 0;
-	faces[4].sdir = [1, 0, 0];
-	faces[4].sbias = 0;
-	faces[5].sdir = [1, 0, 0];
-	faces[5].sbias = 0;
-
-	// assign v
-	faces[0].tdir = [0, 0, -1];
-	faces[0].tbias = 0;
-	faces[1].tdir = [0, 0, -1];
-	faces[1].tbias = 0;
-	faces[2].tdir = [0, -1, 0];
-	faces[2].tbias = 0;
-	faces[3].tdir = [0, 0, -1];
-	faces[3].tbias = 0;
-	faces[4].tdir = [0, 0, -1];
-	faces[4].tbias = 0;
-	faces[5].tdir = [0, -1, 0];
-	faces[5].tbias = 0;
+	// generate texcoords
+	for (int i = 0; i < 6; i++)
+		generate_texcoords(&faces[i], brush_min, brush_max);
 
 	return brush_create(ent.modelindex, faces, 6, CONTENTBIT_SOLID);
 }
@@ -112,6 +126,119 @@ static bool is_sky_index(int in)
 		return false;
 }
 
+static string get_wall_texture(int in)
+{
+	static const string walls[] = {
+		/* 01 */ "WALL1",
+		/* 02 */ "WALL2",
+		/* 03 */ "WALL3",
+		/* 04 */ "WALL4",
+		/* 05 */ "WALL5",
+		/* 06 */ "WALL6",
+		/* 07 */ "WALL7",
+		/* 08 */ "WALL8",
+		/* 09 */ "WALL9",
+		/* 10 */ "WALL10",
+		/* 11 */ "WALL11",
+		/* 12 */ "WALL12",
+		/* 13 */ "WALL13",
+		/* 14 */ "WALL14",
+		/* 15 */ "WALL15",
+		/* 16 */ "WALL16",
+		/* 17 */ "WALL17",
+		/* 18 */ "WALL18",
+		/* 19 */ "WALL19",
+		/* 20 */ "WALL20",
+		/* 21 */ "WALL21",
+		/* 22 */ "WALL22",
+		/* 23 */ "WALL23",
+		/* 24 */ "WALL24",
+		/* 25 */ "WALL25",
+		/* 26 */ "WALL26",
+		/* 27 */ "WALL27",
+		/* 28 */ "WALL28",
+		/* 29 */ "WALL29",
+		/* 30 */ "WALL30",
+		/* 31 */ "WALL31",
+		/* 32 */ "WALL32",
+		/* 36 */ "WALL33",
+		/* 37 */ "WALL34",
+		/* 38 */ "WALL35",
+		/* 39 */ "WALL36",
+		/* 40 */ "WALL37",
+		/* 41 */ "WALL38",
+		/* 42 */ "WALL39",
+		/* 43 */ "WALL40",
+		/* 49 */ "WALL41",
+		/* 50 */ "WALL42",
+		/* 51 */ "WALL43",
+		/* 52 */ "WALL44",
+		/* 53 */ "WALL45",
+		/* 54 */ "WALL46",
+		/* 55 */ "WALL47",
+		/* 56 */ "WALL48",
+		/* 57 */ "WALL49",
+		/* 58 */ "WALL50",
+		/* 59 */ "WALL51",
+		/* 60 */ "WALL52",
+		/* 61 */ "WALL53",
+		/* 62 */ "WALL54",
+		/* 63 */ "WALL55",
+		/* 64 */ "WALL56",
+		/* 65 */ "WALL57",
+		/* 66 */ "WALL58",
+		/* 67 */ "WALL59",
+		/* 68 */ "WALL60",
+		/* 69 */ "WALL61",
+		/* 70 */ "WALL62",
+		/* 71 */ "WALL63",
+		/* 80 */ "WALL64",
+		/* 81 */ "WALL65",
+		/* 82 */ "WALL66",
+		/* 83 */ "WALL67",
+		/* 84 */ "WALL68",
+		/* 85 */ "WALL69",
+		/* 86 */ "WALL70",
+		/* 87 */ "WALL71",
+		/* 88 */ "WALL72",
+		/* 89 */ "WALL73",
+		/* 46 */ "WALL74"
+	};
+
+	static const string exits[] = {
+		/* 47 */ "EXIT",
+		/* 48 */ "ENTRANCE"
+	};
+
+	static const string elevators[] = {
+		/* 72 */ "ELEV1",
+		/* 73 */ "ELEV2",
+		/* 74 */ "ELEV3",
+		/* 75 */ "ELEV4",
+		/* 76 */ "ELEV5",
+		/* 77 */ "ELEV6",
+		/* 78 */ "ELEV7",
+		/* 79 */ "ELEV8"
+	};
+
+	if ((in >= 1) && (in <= 32))
+		return walls[in - 1];
+	else if ((in >= 36) && (in <= 45))
+		return walls[in - 3 - 1];
+	else if (in == 46)
+		return walls[73];
+	else if ((in >= 47) && (in <= 48))
+		return exits[in - 47];
+	else if ((in >= 49) && (in <= 71))
+		return walls[in - 8 - 1];
+	else if ((in >= 72) && (in <= 79))
+		return elevators[in - 72];
+	else if ((in >= 80) && (in <= 89))
+		return walls[in - 16 - 1];
+	else
+		return "";
+}
+
 void make_rott_map(entity ent, int map)
 {
 	// open rtl and allocate walls buffer
@@ -133,25 +260,25 @@ void make_rott_map(entity ent, int map)
 		for (int x = 0; x < RTL_MAP_WIDTH; x++)
 		{
 			// read wall value
-			int wall;
+			int wall = 0;
 			void *src = walls + ((y * RTL_MAP_WIDTH + x) * 2);
 			memcpy((void *)&wall, src, 2);
 
 			// is there a wall here? is it a valid texture?
-			if (!wall || wall >= darkwar_wall_tiles.length)
+			if (wall == 0)
 				continue;
-			if (darkwar_wall_tiles[wall] == "")
+			if (get_wall_texture(wall) == "")
 				continue;
 
 			// add cube brush
-			add_cube(ent, [x, y, 0], [64, 64, 64 * level_height], darkwar_wall_tiles[wall]);
+			add_cube(ent, [x, y, 0], [64, 64, 64 * level_height], get_wall_texture(wall));
 		}
 	}
 
 	// add floor
 	int level_floor = 0;
 	memcpy((void *)&level_floor, walls, 2);
-	add_cube(ent, [0, 0, -1], [64 * 256, 64 * 256, 64], convert_updn_texture(level_floor));
+	add_cube(ent, [0, 0, -1], [64 * 128, 64 * 128, 64], convert_updn_texture(level_floor));
 
 	// add ceiling
 	int level_ceiling = 0;
