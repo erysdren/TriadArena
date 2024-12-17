@@ -4,6 +4,8 @@ const vector PLAYER_MAX_SIZE = [8, 8, 16];
 const vector PLAYER_DEFAULT_VIEW_OFFSET = [0, 0, 8];
 const float PLAYER_DEFAULT_HEALTH = 100;
 
+typedef enum {false, true} bool;
+
 #define NULL __NULL__
 
 #define printf(...) print(sprintf(__VA_ARGS__))
