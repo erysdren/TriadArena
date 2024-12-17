@@ -71,7 +71,45 @@ static int convert_level_height(int in)
 	else if (in >= 450 && in <= 457)
 		return in - 449;
 	else
-		return -1;
+		return 1;
+}
+
+// convert floor and ceiling textures from tile index to string
+static string convert_updn_texture(int in)
+{
+	static const string texnames[] = {
+		"FLRCL1",
+		"FLRCL2",
+		"FLRCL3",
+		"FLRCL4",
+		"FLRCL5",
+		"FLRCL6",
+		"FLRCL7",
+		"FLRCL8",
+		"FLRCL9",
+		"FLRCL10",
+		"FLRCL11",
+		"FLRCL12",
+		"FLRCL13",
+		"FLRCL14",
+		"FLRCL15",
+		"FLRCL16"
+	};
+
+	if (in >= 180 && in <= 195)
+		return texnames[in - 180];
+	else if (in >= 198 && in <= 213)
+		return texnames[in - 198];
+	else
+		return texnames[0];
+}
+
+static bool is_sky_index(int in)
+{
+	if (in >= 234 && in <= 238)
+		return true;
+	else
+		return false;
 }
 
 void make_rott_map(entity ent, int map)
@@ -85,7 +123,7 @@ void make_rott_map(entity ent, int map)
 	rtl_read_map_planes(rtl, map, walls, sprites, NULL);
 
 	// get level z height
-	int level_height = 1;
+	int level_height = 0;
 	memcpy((void *)&level_height, sprites, 2);
 	level_height = convert_level_height(level_height);
 
@@ -111,7 +149,21 @@ void make_rott_map(entity ent, int map)
 	}
 
 	// add floor
-	add_cube(ent, [0, 0, -1], [64 * 256, 64 * 256, 64], "FLRCL6");
+	int level_floor = 0;
+	memcpy((void *)&level_floor, walls, 2);
+	add_cube(ent, [0, 0, -1], [64 * 256, 64 * 256, 64], convert_updn_texture(level_floor));
+
+	// add ceiling
+	int level_ceiling = 0;
+	memcpy((void *)&level_ceiling, walls + 2, 2);
+	if (is_sky_index(level_ceiling))
+	{
+		// TODO: set sky here
+	}
+	else
+	{
+		add_cube(ent, [0, 0, level_height + 1], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling));
+	}
 
 	// close rtl and free walls buffer
 	rtl_close(rtl);
