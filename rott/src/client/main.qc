@@ -51,7 +51,8 @@ void upload_patch_texture(string name)
 	}
 
 	// create shader
-	shaderforname(name, sprintf("{\n{\nmap $rt:$nearest:%s\n}\n}\n", name));
+	// shaderforname(name, sprintf("{\n{\nmap $rt:$nearest:%s\n}\n}\n", name));
+	shaderforname(name, sprintf("{\nprogram defaultwall\ndiffusemap $rt:$nearest:%s\n}\n", name));
 
 	// upload to gpu
 	r_uploadimage(name, width, height, texture32, width * height * 4, IMGFMT_R8G8B8A8);
@@ -91,7 +92,7 @@ void upload_wall_texture(string name)
 			void *src = darkwar_palette + (ofs * 3);
 
 			// get pixel offset
-			void *dest = texture32 + ((y * 64 + x) * 4);
+			void *dest = texture32 + ((x * 64 + y) * 4);
 
 			// copy color
 			memcpy(dest, src, 3);
@@ -102,7 +103,8 @@ void upload_wall_texture(string name)
 	}
 
 	// create shader
-	shaderforname(name, sprintf("{\n{\nmap $rt:$nearest:%s\n}\n}\n", name));
+	// shaderforname(name, sprintf("{\n{\nmap $rt:$nearest:%s\n}\n}\n", name));
+	shaderforname(name, sprintf("{\nprogram defaultwall\ndiffusemap $rt:$nearest:%s\n}\n", name));
 
 	// upload to gpu
 	r_uploadimage(name, 64, 64, texture32, 64 * 64 * 4, IMGFMT_R8G8B8A8);
