@@ -2,6 +2,65 @@
 wad_t *darkwar_wad;
 void *darkwar_palette;
 
+void upload_patch_texture(string name)
+{
+	int lump;
+	int width = 0, height = 0;
+	int originx = 0, originy = 0;
+	void *texture8;
+	void *texture32;
+	int x;
+	int y;
+
+	// read lump data
+	lump = wad_search(darkwar_wad, name);
+	texture8 = wad_read(darkwar_wad, lump);
+
+	// read width, height, origin
+	memcpy(&width, texture8, 2);
+	memcpy(&height, texture8 + 2, 2);
+	memcpy(&originx, texture8 + 4, 2);
+	memcpy(&originy, texture8 + 6, 2);
+
+	// allocate rgba buffer
+	texture32 = memalloc(width * height * 4);
+
+	// construct rgba buffer
+	for (y = 0; y < height; y++)
+	{
+		for (x = 0; x < width; x++)
+		{
+			// max alpha
+			uint32_t alpha = 0xFFFFFFFFu;
+
+			// get palette offset
+			int ofs = ((string)(texture8 + 8))[y * width + x];
+
+			// get palette color
+			void *src = darkwar_palette + (ofs * 3);
+
+			// get pixel offset
+			void *dest = texture32 + ((y * width + x) * 4);
+
+			// copy color
+			memcpy(dest, src, 3);
+
+			// copy alpha
+			memcpy(dest + 3, &alpha, 1);
+		}
+	}
+
+	// create shader
+	shaderforname(name, sprintf("{\n{\nmap $rt:$nearest:%s\n}\n}\n", name));
+
+	// upload to gpu
+	r_uploadimage(name, width, height, texture32, width * height * 4, IMGFMT_R8G8B8A8);
+
+	// free memory
+	memfree(texture8);
+	memfree(texture32);
+}
+
 void upload_wall_texture(string name)
 {
 	int lump;
@@ -66,9 +125,30 @@ void upload_wall_textures(void)
 	}
 }
 
+void upload_floor_textures(void)
+{
+	upload_patch_texture("FLRCL1");
+	upload_patch_texture("FLRCL2");
+	upload_patch_texture("FLRCL3");
+	upload_patch_texture("FLRCL4");
+	upload_patch_texture("FLRCL5");
+	upload_patch_texture("FLRCL6");
+	upload_patch_texture("FLRCL7");
+	upload_patch_texture("FLRCL8");
+	upload_patch_texture("FLRCL9");
+	upload_patch_texture("FLRCL10");
+	upload_patch_texture("FLRCL11");
+	upload_patch_texture("FLRCL12");
+	upload_patch_texture("FLRCL13");
+	upload_patch_texture("FLRCL14");
+	upload_patch_texture("FLRCL15");
+	upload_patch_texture("FLRCL16");
+}
+
 void CSQC_RendererRestarted(string rendererdescription)
 {
 	upload_wall_textures();
+	upload_floor_textures();
 }
 
 void CSQC_Init(float apilevel, string enginename, float engineversion)
