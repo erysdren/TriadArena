@@ -289,7 +289,7 @@ void make_rott_map(entity ent, int map)
 	}
 	else
 	{
-		add_cube(ent, [0, 0, level_height + 1], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling));
+		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling));
 	}
 
 	// close rtl and free walls buffer
