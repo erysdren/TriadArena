@@ -2,6 +2,91 @@
 wad_t *darkwar_wad;
 void *darkwar_palette;
 
+void upload_sky_texture(string botname, string topname)
+{
+	void *texture8;
+	void *texture32;
+	int x, y;
+
+	// read lump data
+	texture8 = wad_read(darkwar_wad, wad_search(darkwar_wad, topname));
+
+	// allocate rgba buffer
+	texture32 = memalloc(256 * 400 * 4);
+
+	// construct rgba buffer
+	for (y = 0; y < 200; y++)
+	{
+		for (x = 0; x < 256; x++)
+		{
+			// max alpha
+			uint32_t alpha = 0xFFFFFFFFu;
+
+			// get palette offset
+			int ofs = ((string)(texture8))[x * 200 + y];
+
+			// get palette color
+			void *src = darkwar_palette + (ofs * 3);
+
+			// get pixel offset
+			void *dest = texture32 + ((y * 256 + x) * 4);
+
+			// copy color
+			memcpy(dest, src, 3);
+
+			// copy alpha
+			memcpy(dest + 3, &alpha, 1);
+		}
+	}
+
+	// free memory
+	memfree(texture8);
+
+	// read lump data
+	texture8 = wad_read(darkwar_wad, wad_search(darkwar_wad, botname));
+
+	// move ptr forward
+	texture32 += 256 * 200 * 4;
+
+	// construct rgba buffer
+	for (y = 0; y < 200; y++)
+	{
+		for (x = 0; x < 256; x++)
+		{
+			// max alpha
+			uint32_t alpha = 0xFFFFFFFFu;
+
+			// get palette offset
+			int ofs = ((string)(texture8))[x * 200 + y];
+
+			// get palette color
+			void *src = darkwar_palette + (ofs * 3);
+
+			// get pixel offset
+			void *dest = texture32 + ((y * 256 + x) * 4);
+
+			// copy color
+			memcpy(dest, src, 3);
+
+			// copy alpha
+			memcpy(dest + 3, &alpha, 1);
+		}
+	}
+
+	// move ptr backwards
+	texture32 -= 256 * 200 * 4;
+
+	// create shader
+	shaderforname(botname, sprintf("{\nprogram defaultwall\ndiffusemap $rt:$nearest:%s\n}\n", botname));
+
+	// upload to gpu
+	r_uploadimage(botname, 256, 400, texture32, 256 * 400 * 4, IMGFMT_R8G8B8A8);
+
+	// free memory
+	memfree(texture8);
+	memfree(texture32);
+}
+
 void upload_patch_texture(string name)
 {
 	int lump;
@@ -147,10 +232,20 @@ void upload_floor_textures(void)
 	upload_patch_texture("FLRCL16");
 }
 
+void upload_sky_textures(void)
+{
+	upload_sky_texture("SKYNT1", "SKYNT1A");
+	upload_sky_texture("SKYDK1", "SKYDK1A");
+	upload_sky_texture("SKYLG1", "SKYLG1A");
+	upload_sky_texture("SKYLB1", "SKYLB1A");
+	upload_sky_texture("SKYEN1", "SKYEN1A");
+}
+
 void CSQC_RendererRestarted(string rendererdescription)
 {
 	upload_wall_textures();
 	upload_floor_textures();
+	upload_sky_textures();
 }
 
 void CSQC_Init(float apilevel, string enginename, float engineversion)
