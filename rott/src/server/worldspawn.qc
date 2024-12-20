@@ -1,5 +1,5 @@
 
 void worldspawn(void)
 {
-	make_rott_map(self, 0);
+	make_rott_map(self, 3);
 }
