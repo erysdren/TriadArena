@@ -239,6 +239,22 @@ static string get_wall_texture(int in)
 		return "";
 }
 
+static string convert_sky_texture(int in)
+{
+	static const string texnames[] = {
+		"SKYNT1",
+		"SKYDK1",
+		"SKYLG1",
+		"SKYLB1",
+		"SKYEN1"
+	};
+
+	if (!is_sky_index(in))
+		return "";
+
+	return texnames[in - 234];
+}
+
 void make_rott_map(entity ent, int map)
 {
 	// open rtl and allocate walls buffer
@@ -285,7 +301,7 @@ void make_rott_map(entity ent, int map)
 	memcpy((void *)&level_ceiling, walls + 2, 2);
 	if (is_sky_index(level_ceiling))
 	{
-		// TODO: set sky here
+		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_sky_texture(level_ceiling));
 	}
 	else
 	{
