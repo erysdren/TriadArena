@@ -1,4 +1,16 @@
 
+enum {
+	DIR_EAST,
+	DIR_NORTHEAST,
+	DIR_NORTH,
+	DIR_NORTHWEST,
+	DIR_WEST,
+	DIR_SOUTHWEST,
+	DIR_SOUTH,
+	DIR_SOUTHEAST,
+	DIR_NONE
+};
+
 // wall textures by tile index
 const string darkwar_wall_tiles[] = {
 	/* 00 */ ""
