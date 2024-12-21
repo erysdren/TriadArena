@@ -16,7 +16,8 @@
 	server/player.qc
 	server/main.qc
 
-	server/worldspawn.qc
 	server/info_player_start.qc
+	server/prop_disk.qc
+	server/worldspawn.qc
 
 #endlist
