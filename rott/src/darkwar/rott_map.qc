@@ -115,7 +115,7 @@ static string convert_updn_texture(int in)
 	else if (in >= 198 && in <= 213)
 		return texnames[in - 198];
 	else
-		return texnames[0];
+		return "";
 }
 
 static bool is_sky_index(int in)
