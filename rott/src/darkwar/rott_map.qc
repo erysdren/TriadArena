@@ -255,15 +255,64 @@ static string convert_sky_texture(int in)
 	return texnames[in - 234];
 }
 
+// for player tiles only
+static vector dir_to_angles_player(int dir)
+{
+	static const vector dirs[] = {
+		[0, 90, 0], // north
+		[0, 180, 0], // east
+		[0, 270, 0], // south
+		[0, 0, 0] // west
+	};
+
+	if (dir < 0 || dir >= 4)
+		return [0, 0, 0];
+
+	return dirs[dir];
+}
+
+// for everything else? maybe?
+static vector dir_to_angles(int dir)
+{
+	static const vector dirs[] = {
+		[0, 180, 0], // DIR_EAST
+		[0, 135, 0], // DIR_NORTHEAST
+		[0, 90, 0], // DIR_NORTH
+		[0, 45, 0], // DIR_NORTHWEST
+		[0, 0, 0], // DIR_WEST
+		[0, 315, 0], // DIR_SOUTHWEST
+		[0, 270, 0], // DIR_SOUTH
+		[0, 225, 0] // DIR_SOUTHEAST
+	};
+
+	if (dir < 0 || dir >= DIR_NONE)
+		return [0, 0, 0];
+
+	return dirs[dir];
+}
+
+static float get_sprite_height(int in)
+{
+	if ((in >> 8) != 0xB0i)
+		return 0;
+
+	in = in & 0xFFi;
+
+	printf("%i\n", in);
+
+	return ((float)in / 255) * 64;
+}
+
 void make_rott_map(entity ent, int map)
 {
 	// open rtl and allocate walls buffer
 	rtl_t *rtl = rtl_open("darkwar.rtl");
 	void *walls = memalloc(RTL_MAP_PLANE_SIZE);
 	void *sprites = memalloc(RTL_MAP_PLANE_SIZE);
+	void *infos = memalloc(RTL_MAP_PLANE_SIZE);
 
-	// read walls and sprites
-	rtl_read_map_planes(rtl, map, walls, sprites, NULL);
+	// read planes
+	rtl_read_map_planes(rtl, map, walls, sprites, infos);
 
 	// get level z height
 	int level_height = 0;
@@ -287,7 +336,7 @@ void make_rott_map(entity ent, int map)
 				continue;
 
 			// add cube brush
-			add_cube(ent, [x, y, 0], [64, 64, 64 * level_height], get_wall_texture(wall));
+			add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(wall));
 		}
 	}
 
@@ -308,8 +357,79 @@ void make_rott_map(entity ent, int map)
 		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling));
 	}
 
+	// spawn some entities
+	for (int y = 0; y < RTL_MAP_HEIGHT; y++)
+	{
+		for (int x = 0; x < RTL_MAP_WIDTH; x++)
+		{
+			// read tile value
+			int tile = 0;
+			void *src = sprites + ((y * RTL_MAP_WIDTH + x) * 2);
+			memcpy((void *)&tile, src, 2);
+
+			// is there anything here?
+			if (tile == 0)
+				continue;
+
+			string cn = "";
+			vector ang = [0, 0, 0];
+
+			switch (tile)
+			{
+				// player 1
+				case 19:
+				case 20:
+				case 21:
+				case 22:
+					cn = "info_player_start";
+					ang = dir_to_angles_player(tile - 19);
+					break;
+
+				// player 2
+				case 274:
+				case 275:
+				case 276:
+				case 277:
+					cn = "info_player_deathmatch";
+					ang = dir_to_angles_player(tile - 274);
+					break;
+
+				// gad
+				case 461:
+					cn = "prop_disk";
+					break;
+			}
+
+			if (cn != "")
+			{
+				entity e = spawn();
+				e.classname = cn;
+				e.angles = ang;
+
+				// get sprite height
+				int infotile = 0;
+				src = infos + ((y * RTL_MAP_WIDTH + x) * 2);
+				memcpy((void *)&infotile, src, 2);
+				float sprite_height = get_sprite_height(infotile);
+
+				// set origin
+				setorigin(e, [(y * 64) + 32, (x * 64) + 32, sprite_height]);
+
+				void() spawnfunc = externvalue(-1, cn);
+				if (spawnfunc)
+				{
+					entity oself = self;
+					self = e;
+					spawnfunc();
+					self = oself;
+				}
+			}
+		}
+	}
+
 	// close rtl and free walls buffer
 	rtl_close(rtl);
 	memfree(walls);
 	memfree(sprites);
+	memfree(infos);
 }
