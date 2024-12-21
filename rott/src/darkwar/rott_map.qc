@@ -42,7 +42,7 @@ static void generate_texcoords(brushface_t *face, vector brush_min, vector brush
 	face->tbias = tcorner * face->tdir;
 }
 
-int add_cube(entity ent, vector pos, vector brush_size, string texture)
+static int add_cube(entity ent, vector pos, vector brush_size, string texture)
 {
 	static brushface_t faces[6];
 	vector brush_min = [brush_size.x * pos.x, brush_size.y * pos.y, brush_size.z * pos.z];
