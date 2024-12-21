@@ -17,5 +17,6 @@
 	server/main.qc
 
 	server/worldspawn.qc
+	server/info_player_start.qc
 
 #endlist
