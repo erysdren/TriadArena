@@ -77,7 +77,7 @@ void upload_sky_texture(string botname, string topname)
 	texture32 -= 256 * 200 * 4;
 
 	// create shader
-	shaderforname(botname, sprintf("{\nprogram defaultwall\ndiffusemap $rt:$nearest:%s\n}\n", botname));
+	shaderforname(botname, sprintf("{\nprogram rottsky\ndiffusemap $rt:$nearest:%s\n}\n", botname));
 
 	// upload to gpu
 	r_uploadimage(botname, 256, 400, texture32, 256 * 400 * 4, IMGFMT_R8G8B8A8);
