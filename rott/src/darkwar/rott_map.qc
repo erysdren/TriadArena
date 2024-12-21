@@ -239,6 +239,11 @@ static string get_wall_texture(int in)
 		return "";
 }
 
+static string get_maskwall_texture(int in)
+{
+	return "";
+}
+
 static string convert_sky_texture(int in)
 {
 	static const string texnames[] = {
@@ -303,6 +308,21 @@ static float get_sprite_height(int in)
 	return ((float)in / 255) * 64;
 }
 
+static int planespot(void *plane, int x, int y)
+{
+	int r = 0;
+	memcpy(&r, plane + ((y * RTL_MAP_WIDTH + x) * 2), 2);
+	return r;
+}
+
+static bool is_platform(int in)
+{
+	if (in == 1 || (in >= 4 && in <= 9))
+		return true;
+	else
+		return false;
+}
+
 void make_rott_map(entity ent, int map)
 {
 	// open rtl and allocate walls buffer
@@ -315,8 +335,7 @@ void make_rott_map(entity ent, int map)
 	rtl_read_map_planes(rtl, map, walls, sprites, infos);
 
 	// get level z height
-	int level_height = 0;
-	memcpy((void *)&level_height, sprites, 2);
+	int level_height = planespot(sprites, 0, 0);
 	level_height = convert_level_height(level_height);
 
 	// create brushes from walls
@@ -325,29 +344,35 @@ void make_rott_map(entity ent, int map)
 		for (int x = 0; x < RTL_MAP_WIDTH; x++)
 		{
 			// read wall value
-			int wall = 0;
-			void *src = walls + ((y * RTL_MAP_WIDTH + x) * 2);
-			memcpy((void *)&wall, src, 2);
+			int tile = planespot(walls, x, y);
 
 			// is there a wall here? is it a valid texture?
-			if (wall == 0)
-				continue;
-			if (get_wall_texture(wall) == "")
+			if (tile == 0)
 				continue;
 
-			// add cube brush
-			add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(wall));
+			// is it a platform wall?
+			int infotile = planespot(infos, x, y);
+			if (is_platform(infotile))
+				continue;
+
+			// its a standard wall
+			if (get_wall_texture(tile) != "")
+			{
+				add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(tile));
+			}
+			else if (get_maskwall_texture(tile) != "")
+			{
+
+			}
 		}
 	}
 
 	// add floor
-	int level_floor = 0;
-	memcpy((void *)&level_floor, walls, 2);
+	int level_floor = planespot(walls, 0, 0);
 	add_cube(ent, [0, 0, -1], [64 * 128, 64 * 128, 64], convert_updn_texture(level_floor));
 
 	// add ceiling
-	int level_ceiling = 0;
-	memcpy((void *)&level_ceiling, walls + 2, 2);
+	int level_ceiling = planespot(walls, 1, 0);
 	if (is_sky_index(level_ceiling))
 	{
 		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_sky_texture(level_ceiling));
@@ -363,9 +388,7 @@ void make_rott_map(entity ent, int map)
 		for (int x = 0; x < RTL_MAP_WIDTH; x++)
 		{
 			// read tile value
-			int tile = 0;
-			void *src = sprites + ((y * RTL_MAP_WIDTH + x) * 2);
-			memcpy((void *)&tile, src, 2);
+			int tile = planespot(sprites, x, y);
 
 			// is there anything here?
 			if (tile == 0)
@@ -407,9 +430,7 @@ void make_rott_map(entity ent, int map)
 				e.angles = ang;
 
 				// get sprite height
-				int infotile = 0;
-				src = infos + ((y * RTL_MAP_WIDTH + x) * 2);
-				memcpy((void *)&infotile, src, 2);
+				int infotile = planespot(infos, x, y);
 				float sprite_height = get_sprite_height(infotile);
 
 				// set origin
