@@ -42,7 +42,7 @@ static void generate_texcoords(brushface_t *face, vector brush_min, vector brush
 	face->tbias = tcorner * face->tdir;
 }
 
-static int add_cube(entity ent, vector pos, vector brush_size, string texture)
+static int add_cube(entity ent, vector pos, vector brush_size, string texture, int contents)
 {
 	static brushface_t faces[6];
 	vector brush_min = [brush_size.x * pos.x, brush_size.y * pos.y, brush_size.z * pos.z];
@@ -74,7 +74,7 @@ static int add_cube(entity ent, vector pos, vector brush_size, string texture)
 	for (int i = 0; i < 6; i++)
 		generate_texcoords(&faces[i], brush_min, brush_max);
 
-	return brush_create(ent.modelindex, faces, 6, CONTENTBIT_SOLID);
+	return brush_create(ent.modelindex, faces, 6, contents);
 }
 
 // convert level height from tilemap index (sprites plane)
@@ -296,16 +296,22 @@ static vector dir_to_angles(int dir)
 	return dirs[dir];
 }
 
-static float get_sprite_height(int in)
+static float get_sprite_height(int in, int level_height)
 {
 	if ((in >> 8) != 0xB0i)
 		return 0;
 
-	in = in & 0xFFi;
+	in &= 0xFFi;
 
-	printf("%i\n", in);
+	int z = in >> 4;
+	int zf = in & 0xFi;
 
-	return ((float)in / 255) * 64;
+	int nominalheight = (level_height << 6) - 64;
+
+	if (z == 0xFi)
+		return nominalheight + 64 - (zf << 2);
+	else
+		return nominalheight - (z << 6) - (zf << 2);
 }
 
 static int planespot(void *plane, int x, int y)
@@ -315,7 +321,7 @@ static int planespot(void *plane, int x, int y)
 	return r;
 }
 
-static bool is_platform(int in)
+static bool is_platform_index(int in)
 {
 	if (in == 1 || (in >= 4 && in <= 9))
 		return true;
@@ -343,43 +349,49 @@ void make_rott_map(entity ent, int map)
 	{
 		for (int x = 0; x < RTL_MAP_WIDTH; x++)
 		{
-			// read wall value
+			// read tile value
 			int tile = planespot(walls, x, y);
 
-			// is there a wall here? is it a valid texture?
+			// is there a wall here?
 			if (tile == 0)
 				continue;
 
-			// is it a platform wall?
-			int infotile = planespot(infos, x, y);
-			if (is_platform(infotile))
-				continue;
-
-			// its a standard wall
 			if (get_wall_texture(tile) != "")
 			{
-				add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(tile));
+				// get info tile for this wall
+				int infotile = planespot(infos, x, y);
+
+				// is it a platform wall?
+				if (is_platform_index(infotile))
+				{
+
+				}
+				else
+				{
+					// is it a standard wall?
+					add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(tile), CONTENTBIT_SOLID);
+				}
 			}
 			else if (get_maskwall_texture(tile) != "")
 			{
-
+				// is it a masked wall?
 			}
 		}
 	}
 
 	// add floor
 	int level_floor = planespot(walls, 0, 0);
-	add_cube(ent, [0, 0, -1], [64 * 128, 64 * 128, 64], convert_updn_texture(level_floor));
+	add_cube(ent, [0, 0, -1], [64 * 128, 64 * 128, 64], convert_updn_texture(level_floor), CONTENTBIT_SOLID);
 
 	// add ceiling
 	int level_ceiling = planespot(walls, 1, 0);
 	if (is_sky_index(level_ceiling))
 	{
-		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_sky_texture(level_ceiling));
+		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_sky_texture(level_ceiling), CONTENTBIT_SKY);
 	}
 	else
 	{
-		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling));
+		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling), CONTENTBIT_SOLID);
 	}
 
 	// spawn some entities
@@ -419,6 +431,11 @@ void make_rott_map(entity ent, int map)
 
 				// gad
 				case 461:
+				case 462:
+				case 463:
+				case 464:
+				case 465:
+				case 466:
 					cn = "prop_disk";
 					break;
 			}
@@ -431,7 +448,7 @@ void make_rott_map(entity ent, int map)
 
 				// get sprite height
 				int infotile = planespot(infos, x, y);
-				float sprite_height = get_sprite_height(infotile);
+				float sprite_height = get_sprite_height(infotile, level_height);
 
 				// set origin
 				setorigin(e, [(y * 64) + 32, (x * 64) + 32, sprite_height]);
