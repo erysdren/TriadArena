@@ -7,9 +7,9 @@
 	shared/fteextensions.qc
 	shared/defs.qc
 
+	darkwar/defs.qc
 	darkwar/wad.qc
 	darkwar/rtl.qc
-	darkwar/tables.qc
 	darkwar/rott_map.qc
 
 	client/defs.qc
