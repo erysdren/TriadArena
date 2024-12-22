@@ -87,7 +87,7 @@ void upload_sky_texture(string botname, string topname)
 	memfree(texture32);
 }
 
-void upload_patch_texture(string name)
+void upload_lpic_texture(string name)
 {
 	int lump;
 	int width = 0, height = 0;
@@ -214,22 +214,22 @@ void upload_wall_textures(void)
 
 void upload_floor_textures(void)
 {
-	upload_patch_texture("FLRCL1");
-	upload_patch_texture("FLRCL2");
-	upload_patch_texture("FLRCL3");
-	upload_patch_texture("FLRCL4");
-	upload_patch_texture("FLRCL5");
-	upload_patch_texture("FLRCL6");
-	upload_patch_texture("FLRCL7");
-	upload_patch_texture("FLRCL8");
-	upload_patch_texture("FLRCL9");
-	upload_patch_texture("FLRCL10");
-	upload_patch_texture("FLRCL11");
-	upload_patch_texture("FLRCL12");
-	upload_patch_texture("FLRCL13");
-	upload_patch_texture("FLRCL14");
-	upload_patch_texture("FLRCL15");
-	upload_patch_texture("FLRCL16");
+	upload_lpic_texture("FLRCL1");
+	upload_lpic_texture("FLRCL2");
+	upload_lpic_texture("FLRCL3");
+	upload_lpic_texture("FLRCL4");
+	upload_lpic_texture("FLRCL5");
+	upload_lpic_texture("FLRCL6");
+	upload_lpic_texture("FLRCL7");
+	upload_lpic_texture("FLRCL8");
+	upload_lpic_texture("FLRCL9");
+	upload_lpic_texture("FLRCL10");
+	upload_lpic_texture("FLRCL11");
+	upload_lpic_texture("FLRCL12");
+	upload_lpic_texture("FLRCL13");
+	upload_lpic_texture("FLRCL14");
+	upload_lpic_texture("FLRCL15");
+	upload_lpic_texture("FLRCL16");
 }
 
 void upload_sky_textures(void)
