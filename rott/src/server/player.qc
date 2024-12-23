@@ -1,13 +1,13 @@
 
 enum {
-	PLAYER_TYPE_TARADINO,
-	PLAYER_TYPE_THI,
-	PLAYER_TYPE_DOUG,
-	PLAYER_TYPE_LORELEI,
-	PLAYER_TYPE_IANPAUL
+	PLAYER_CHARACTER_TARADINO,
+	PLAYER_CHARACTER_THI,
+	PLAYER_CHARACTER_DOUG,
+	PLAYER_CHARACTER_LORELEI,
+	PLAYER_CHARACTER_IANPAUL
 };
 
-const string player_type_names[] = {
+const string player_character_names[] = {
 	"TARADINO CASSATT",
 	"THI BARRETT",
 	"DOUG WENDT",
@@ -29,7 +29,7 @@ void player_set_character(entity e, int character)
 {
 	switch (character)
 	{
-		case PLAYER_TYPE_TARADINO:
+		case PLAYER_CHARACTER_TARADINO:
 		{
 			e.health = 100;
 			e.accuracy = 2;
@@ -37,7 +37,7 @@ void player_set_character(entity e, int character)
 			break;
 		}
 
-		case PLAYER_TYPE_THI:
+		case PLAYER_CHARACTER_THI:
 		{
 			e.health = 85;
 			e.accuracy = 3;
@@ -45,7 +45,7 @@ void player_set_character(entity e, int character)
 			break;
 		}
 
-		case PLAYER_TYPE_DOUG:
+		case PLAYER_CHARACTER_DOUG:
 		{
 			e.health = 150;
 			e.accuracy = 3;
@@ -53,7 +53,7 @@ void player_set_character(entity e, int character)
 			break;
 		}
 
-		case PLAYER_TYPE_LORELEI:
+		case PLAYER_CHARACTER_LORELEI:
 		{
 			e.health = 70;
 			e.accuracy = 2;
@@ -61,7 +61,7 @@ void player_set_character(entity e, int character)
 			break;
 		}
 
-		case PLAYER_TYPE_IANPAUL:
+		case PLAYER_CHARACTER_IANPAUL:
 		{
 			e.health = 120;
 			e.accuracy = 3;
@@ -101,5 +101,5 @@ void player_spawn(void)
 	self.flags |= FL_CLIENT;
 	self.classname = "player";
 
-	player_set_character(self, PLAYER_TYPE_TARADINO);
+	player_set_character(self, PLAYER_CHARACTER_TARADINO);
 }
