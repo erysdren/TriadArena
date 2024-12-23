@@ -1,4 +1,20 @@
 
+enum {
+	PLAYER_TYPE_TARADINO,
+	PLAYER_TYPE_THI,
+	PLAYER_TYPE_DOUG,
+	PLAYER_TYPE_LORELEI,
+	PLAYER_TYPE_IANPAUL
+};
+
+const string player_type_names[] = {
+	"TARADINO CASSATT",
+	"THI BARRETT",
+	"DOUG WENDT",
+	"LORELEI NI",
+	"IAN PAUL FREELEY"
+};
+
 void player_preframe(void)
 {
 
@@ -7,6 +23,60 @@ void player_preframe(void)
 void player_postframe(void)
 {
 
+}
+
+void player_set_character(entity e, int character)
+{
+	switch (character)
+	{
+		case PLAYER_TYPE_TARADINO:
+		{
+			e.health = 100;
+			e.accuracy = 2;
+			e.view_ofs = [0, 0, 39];
+			break;
+		}
+
+		case PLAYER_TYPE_THI:
+		{
+			e.health = 85;
+			e.accuracy = 3;
+			e.view_ofs = [0, 0, 32];
+			break;
+		}
+
+		case PLAYER_TYPE_DOUG:
+		{
+			e.health = 150;
+			e.accuracy = 3;
+			e.view_ofs = [0, 0, 44];
+			break;
+		}
+
+		case PLAYER_TYPE_LORELEI:
+		{
+			e.health = 70;
+			e.accuracy = 2;
+			e.view_ofs = [0, 0, 31];
+			break;
+		}
+
+		case PLAYER_TYPE_IANPAUL:
+		{
+			e.health = 120;
+			e.accuracy = 3;
+			e.view_ofs = [0, 0, 39];
+			break;
+		}
+
+		default:
+		{
+			error("invalid character");
+			return;
+		}
+	}
+
+	e.type = character;
 }
 
 void player_spawn(void)
@@ -26,10 +96,10 @@ void player_spawn(void)
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_WALK;
-	self.health = PLAYER_DEFAULT_HEALTH;
 	self.fixangle = TRUE;
 	setsize(self, PLAYER_MIN_SIZE, PLAYER_MAX_SIZE);
-	self.view_ofs = PLAYER_DEFAULT_VIEW_OFFSET;
 	self.flags |= FL_CLIENT;
 	self.classname = "player";
+
+	player_set_character(self, PLAYER_TYPE_TARADINO);
 }
