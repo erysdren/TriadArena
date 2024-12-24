@@ -33,13 +33,35 @@ void CSQC_Shutdown(void)
 
 void CSQC_UpdateView(float vwidth, float vheight, float notmenu)
 {
+	static vec4 glsl_userdata[16];
+
+	// clear screen
 	clearscene();
 
+	// setup userdata
+	glsl_userdata[0][0] = getproperty(VF_ANGLES_X);
+	glsl_userdata[0][1] = getproperty(VF_ANGLES_Y);
+	glsl_userdata[0][2] = getproperty(VF_ANGLES_Z);
+	glsl_userdata[1][0] = getproperty(VF_MIN_X);
+	glsl_userdata[1][1] = getproperty(VF_MIN_Y);
+	glsl_userdata[1][2] = getproperty(VF_SIZE_X);
+	glsl_userdata[1][3] = getproperty(VF_SIZE_Y);
+	setproperty(VF_USERDATA, &glsl_userdata, sizeof(glsl_userdata));
+
+	// setup viewport
+	setproperty(VF_VIEWPORT, [0, -(vheight / 2) - (getproperty(VF_ANGLES_X) * 2)], [vwidth, vheight * 2]);
+	setproperty(VF_ANGLES_X, 0);
+	setproperty(VF_AFOV, 110);
+
+	// setup other properties
 	setproperty(VF_DRAWENGINESBAR, FALSE);
 	setproperty(VF_DRAWCROSSHAIR, FALSE);
 	setproperty(VF_DRAWWORLD, TRUE);
+
+	// add entities
 	addentities(MASK_ENGINE | MASK_VIEWMODEL);
 
+	// do render
 	renderscene();
 }
 
