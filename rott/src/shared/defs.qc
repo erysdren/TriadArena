@@ -2,6 +2,22 @@
 const vector PLAYER_MIN_SIZE = [-8, -8, 0];
 const vector PLAYER_MAX_SIZE = [8, 8, 48];
 
+enum {
+	PLAYER_CHARACTER_TARADINO,
+	PLAYER_CHARACTER_THI,
+	PLAYER_CHARACTER_DOUG,
+	PLAYER_CHARACTER_LORELEI,
+	PLAYER_CHARACTER_IANPAUL
+};
+
+const string player_character_names[] = {
+	"TARADINO CASSATT",
+	"THI BARRETT",
+	"DOUG WENDT",
+	"LORELEI NI",
+	"IAN PAUL FREELEY"
+};
+
 typedef enum {false, true} bool;
 
 #define NULL __NULL__
