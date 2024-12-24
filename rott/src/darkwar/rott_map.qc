@@ -361,10 +361,9 @@ void make_rott_map(entity ent, int map)
 				// get info tile for this wall
 				int infotile = planespot(infos, x, y);
 
-				// is it a platform wall?
 				if (is_platform_index(infotile))
 				{
-
+					// is it a platform wall?
 				}
 				else
 				{
