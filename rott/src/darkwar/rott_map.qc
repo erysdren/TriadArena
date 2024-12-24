@@ -358,7 +358,7 @@ void make_rott_map(entity ent, int map)
 			if (is_window_index(infotile))
 			{
 				// is it a window to the sky?
-				add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], convert_sky_texture(level_ceiling), CONTENTBIT_SOLID);
+				add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], convert_sky_texture(level_ceiling), CONTENTBIT_SKY);
 			}
 			else if (get_wall_texture(walltile) != "")
 			{
