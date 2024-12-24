@@ -84,12 +84,14 @@ void SV_ParseClientCommand(string cmd)
 					player_set_character(self, character);
 			}
 
-			sprint(self, 0, "YOU ARE ", player_character_names[self.type], "!\n");
+			sprint(self, 5, "YOU ARE ", player_character_names[self.type], "!\n");
+			break;
 		}
 
 		default:
 		{
 			clientcommand(self, cmd);
+			break;
 		}
 	}
 }
