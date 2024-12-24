@@ -71,7 +71,27 @@ void SpectatorThink(void)
 
 void SV_ParseClientCommand(string cmd)
 {
-	clientcommand(self, cmd);
+	int argc = tokenize_console(cmd);
+
+	switch (argv(0))
+	{
+		case "setcharacter":
+		{
+			if (argc >= 2)
+			{
+				int character = stoi(argv(1));
+				if (character >= 0 && character <= 4)
+					player_set_character(self, character);
+			}
+
+			sprint(self, 0, "YOU ARE ", player_character_names[self.type], "!\n");
+		}
+
+		default:
+		{
+			clientcommand(self, cmd);
+		}
+	}
 }
 
 void SV_PausedTic(float paused_time)
