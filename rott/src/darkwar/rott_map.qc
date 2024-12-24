@@ -260,8 +260,7 @@ static string convert_sky_texture(int in)
 	return texnames[in - 234];
 }
 
-// for player tiles only
-static vector dir_to_angles_player(int dir)
+static vector dir_to_angles(int dir)
 {
 	static const vector dirs[] = {
 		[0, 90, 0], // north
@@ -273,27 +272,8 @@ static vector dir_to_angles_player(int dir)
 	if (dir < 0 || dir >= 4)
 		return [0, 0, 0];
 
-	return dirs[dir];
-}
-
-// for everything else? maybe?
-static vector dir_to_angles(int dir)
-{
-	static const vector dirs[] = {
-		[0, 180, 0], // DIR_EAST
-		[0, 135, 0], // DIR_NORTHEAST
-		[0, 90, 0], // DIR_NORTH
-		[0, 45, 0], // DIR_NORTHWEST
-		[0, 0, 0], // DIR_WEST
-		[0, 315, 0], // DIR_SOUTHWEST
-		[0, 270, 0], // DIR_SOUTH
-		[0, 225, 0] // DIR_SOUTHEAST
-	};
-
-	if (dir < 0 || dir >= DIR_NONE)
-		return [0, 0, 0];
-
-	return dirs[dir];
+	// hack because maps are rotated
+	return dirs[dir] - [0, 90, 0];
 }
 
 static float get_sprite_height(int in, int level_height)
@@ -321,6 +301,11 @@ static int planespot(void *plane, int x, int y)
 	return r;
 }
 
+static bool is_window_index(int in)
+{
+	return in == 13;
+}
+
 static bool is_platform_index(int in)
 {
 	if (in == 1 || (in >= 4 && in <= 9))
@@ -344,40 +329,6 @@ void make_rott_map(entity ent, int map)
 	int level_height = planespot(sprites, 0, 0);
 	level_height = convert_level_height(level_height);
 
-	// create brushes from walls
-	for (int y = 0; y < RTL_MAP_HEIGHT; y++)
-	{
-		for (int x = 0; x < RTL_MAP_WIDTH; x++)
-		{
-			// read tile value
-			int tile = planespot(walls, x, y);
-
-			// is there a wall here?
-			if (tile == 0)
-				continue;
-
-			if (get_wall_texture(tile) != "")
-			{
-				// get info tile for this wall
-				int infotile = planespot(infos, x, y);
-
-				if (is_platform_index(infotile))
-				{
-					// is it a platform wall?
-				}
-				else
-				{
-					// is it a standard wall?
-					add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(tile), CONTENTBIT_SOLID);
-				}
-			}
-			else if (get_maskwall_texture(tile) != "")
-			{
-				// is it a masked wall?
-			}
-		}
-	}
-
 	// add floor
 	int level_floor = planespot(walls, 0, 0);
 	add_cube(ent, [0, 0, -1], [64 * 128, 64 * 128, 64], convert_updn_texture(level_floor), CONTENTBIT_SOLID);
@@ -393,22 +344,57 @@ void make_rott_map(entity ent, int map)
 		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling), CONTENTBIT_SOLID);
 	}
 
+	// add walls
+	for (int y = 0; y < RTL_MAP_HEIGHT; y++)
+	{
+		for (int x = 0; x < RTL_MAP_WIDTH; x++)
+		{
+			// get wall tile value
+			int walltile = planespot(walls, x, y);
+
+			// get info tile value
+			int infotile = planespot(infos, x, y);
+
+			if (is_window_index(infotile))
+			{
+				// is it a window to the sky?
+				add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], convert_sky_texture(level_ceiling), CONTENTBIT_SOLID);
+			}
+			else if (get_wall_texture(walltile) != "")
+			{
+				if (is_platform_index(infotile))
+				{
+					// is it a platform wall?
+				}
+				else
+				{
+					// is it a standard wall?
+					add_cube(ent, [y, x, 0], [64, 64, 64 * level_height], get_wall_texture(walltile), CONTENTBIT_SOLID);
+				}
+			}
+			else if (get_maskwall_texture(walltile) != "")
+			{
+				// is it a masked wall?
+			}
+		}
+	}
+
 	// spawn some entities
 	for (int y = 0; y < RTL_MAP_HEIGHT; y++)
 	{
 		for (int x = 0; x < RTL_MAP_WIDTH; x++)
 		{
 			// read tile value
-			int tile = planespot(sprites, x, y);
+			int spritetile = planespot(sprites, x, y);
 
 			// is there anything here?
-			if (tile == 0)
+			if (spritetile == 0)
 				continue;
 
 			string cn = "";
 			vector ang = [0, 0, 0];
 
-			switch (tile)
+			switch (spritetile)
 			{
 				// player 1
 				case 19:
@@ -416,7 +402,7 @@ void make_rott_map(entity ent, int map)
 				case 21:
 				case 22:
 					cn = "info_player_start";
-					ang = dir_to_angles_player(tile - 19);
+					ang = dir_to_angles(spritetile - 19);
 					break;
 
 				// player 2
@@ -425,7 +411,7 @@ void make_rott_map(entity ent, int map)
 				case 276:
 				case 277:
 					cn = "info_player_deathmatch";
-					ang = dir_to_angles_player(tile - 274);
+					ang = dir_to_angles(spritetile - 274);
 					break;
 
 				// gad
