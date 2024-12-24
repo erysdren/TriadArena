@@ -1,8 +1,6 @@
 !!ver 130 460
 
-!!samps diffuse
-
-varying vec3 pos;
+!!samps 2
 
 #include "sys/defs.h"
 
@@ -10,7 +8,6 @@ varying vec3 pos;
 
 	void main()
 	{
-		pos = v_position.xyz - e_eyepos;
 		gl_Position = ftetransform();
 	}
 
@@ -20,12 +17,20 @@ varying vec3 pos;
 
 	void main()
 	{
-		vec3 dir = -normalize(pos);
+		vec3 angles = w_user[0].xyz;
 
-		#define PI 3.1415926535897932384626433832795
-		vec2 txc = vec2(0.5 + atan(dir.z, dir.x) / (2.0 * PI), dir.y);
+		vec2 screensize = textureSize(s_t0, 0);
+		vec2 skysize = textureSize(s_t1, 0);
 
-		vec4 diffuse = texture2D(s_diffuse, txc);
+		screensize.y *= 2;
+
+		vec2 txc = gl_FragCoord.xy / screensize;
+		txc.y *= -1;
+		txc.y -= 0.25;
+		txc.y += angles.x / 360;
+		txc.x -= angles.y / 180;
+
+		vec4 diffuse = texture2D(s_t1, fract(txc));
 		gl_FragColor = diffuse;
 	}
 
