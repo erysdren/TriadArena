@@ -1,5 +1,5 @@
 #pragma target fte_5768
-#define SSQC
+#define QWSSQC
 #pragma progs_dat "../progs.dat"
 
 #includelist
