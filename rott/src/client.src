@@ -13,6 +13,7 @@
 	darkwar/rott_map.qc
 
 	client/defs.qc
+	client/upload.qc
 	client/main.qc
 
 #endlist
