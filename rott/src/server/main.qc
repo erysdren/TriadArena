@@ -106,5 +106,9 @@ float SV_ShouldPause(float new_status)
 
 void SV_RunClientCommand(void)
 {
+	// suppress jumps
+	input_buttons &= ~2;
+
+	// run standard player physics with prediction
 	runstandardplayerphysics(self);
 }
