@@ -7,6 +7,7 @@ typedef enum {false, true} bool;
 #define NULL __NULL__
 
 #define printf(...) print(sprintf(__VA_ARGS__))
+#define errorf(...) error(sprintf(__VA_ARGS__))
 
 typedef __uint uint32_t;
 typedef __int int32_t;
