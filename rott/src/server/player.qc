@@ -71,7 +71,7 @@ void player_set_character(entity e, int character)
 
 		default:
 		{
-			error("invalid character");
+			errorf("invalid character num %i\n", character);
 			return;
 		}
 	}
