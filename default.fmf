@@ -3,3 +3,4 @@ basegame rott
 name "ROTT4FTE"
 disablehomedir 1
 package "rott/rottgoodies.exe"
+package "rott/rott_sc55.zip"
