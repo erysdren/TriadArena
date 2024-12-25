@@ -31,5 +31,7 @@ typedef __int int32_t;
 typedef __uint64 uint64_t;
 typedef __int64 int64_t;
 
+// player fields
 .int type;
 .float accuracy;
+.vector previous_velocity;

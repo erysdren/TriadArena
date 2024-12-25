@@ -6,7 +6,17 @@ void player_preframe(void)
 
 void player_postframe(void)
 {
+	// play running-into-wall sound
+	if ((self.velocity.x == 0 && fabs(self.previous_velocity.x) >= 150) ||
+		(self.velocity.y == 0 && fabs(self.previous_velocity.y) >= 150))
+		printf("C_HITWAL.WAV\n");
 
+	// play landing-on-ground sound
+	if ((self.flags & FL_ONGROUND) && (self.previous_velocity.z <= -300))
+		printf("P_LAND.WAV\n");
+
+	// save velocity for next frame
+	self.previous_velocity = self.velocity;
 }
 
 void player_set_character(entity e, int character)
