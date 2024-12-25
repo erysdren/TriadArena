@@ -9,6 +9,7 @@
 
 	darkwar/defs.qc
 	darkwar/wad.qc
+	darkwar/music.qc
 	darkwar/rtl.qc
 	darkwar/rott_map.qc
 
