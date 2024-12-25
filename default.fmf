@@ -1,6 +1,10 @@
-game rott
-basegame rott
-name "ROTT4FTE"
-disablehomedir 1
-package "rott/rottgoodies.exe"
-package "rott/rott_sc55.zip"
+FTEMANIFEST 1
+GAME rott
+BASEGAME rott
+NAME "ROTT4FTE"
+PROTOCOLNAME "ROTT4FTE"
+DISABLEHOMEDIR 1
+PACKAGE "rott/rottgoodies.zip" 0xf5e403ff "https://archive.org/download/rottgoodies/rottgoodies.exe" "ftp://ftp.3drealms.com/misc/rottgoodies.exe"
+PACKAGE "rott/rott_sc55.zip" 0x4fa37247 "https://sc55.duke4.net/ogg/rott_sc55.zip"
+INSTALL "rott/rottgoodies.zip"
+INSTALL "rott/rott_sc55.zip"
