@@ -9,11 +9,11 @@ void player_postframe(void)
 	// play running-into-wall sound
 	if ((self.velocity.x == 0 && fabs(self.previous_velocity.x) >= 150) ||
 		(self.velocity.y == 0 && fabs(self.previous_velocity.y) >= 150))
-		printf("C_HITWAL.WAV\n");
+		sound(self, CHAN_AUTO, "wavs/c_hitwal.wav", 1, ATTN_NORM);
 
 	// play landing-on-ground sound
 	if ((self.flags & FL_ONGROUND) && (self.previous_velocity.z <= -300))
-		printf("P_LAND.WAV\n");
+		sound(self, CHAN_AUTO, "wavs/p_land.wav", 1, ATTN_NORM);
 
 	// save velocity for next frame
 	self.previous_velocity = self.velocity;
@@ -87,6 +87,9 @@ void player_spawn(void)
 		setorigin(self, [0, 0, 0]);
 		self.angles = [0, 0, 0];
 	}
+
+	precache_sound("wavs/c_hitwal.wav");
+	precache_sound("wavs/p_land.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_WALK;
