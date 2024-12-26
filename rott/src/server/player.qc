@@ -73,6 +73,16 @@ void player_set_character(entity e, int character)
 	e.type = character;
 }
 
+void player_start_song(entity e, int songtype, int levelsong)
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_MUSIC_START);
+	WriteByte(MSG_MULTICAST, songtype);
+	WriteByte(MSG_MULTICAST, levelsong);
+	msg_entity = e;
+	multicast(e.origin, MULTICAST_ONE_R);
+}
+
 void player_spawn(void)
 {
 	entity spot = find(world, classname, "info_player_start");
@@ -99,4 +109,6 @@ void player_spawn(void)
 	self.classname = "player";
 
 	player_set_character(self, PLAYER_CHARACTER_TARADINO);
+
+	player_start_song(self, SONG_TYPE_LEVEL, mapsong);
 }

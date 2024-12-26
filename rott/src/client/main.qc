@@ -110,8 +110,9 @@ void CSQC_Parse_Event(void)
 	{
 		case EVENT_MUSIC_START:
 		{
-			int levelindex = readbyte();
-			song_play_type(SONG_TYPE_LEVEL, levelindex);
+			int songtype = readbyte();
+			int levelsong = readbyte();
+			song_play_type(songtype, levelsong);
 			break;
 		}
 	}

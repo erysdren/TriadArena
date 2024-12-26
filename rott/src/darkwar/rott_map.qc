@@ -314,6 +314,8 @@ static bool is_platform_index(int in)
 		return false;
 }
 
+var int mapsong = 0;
+
 void make_rott_map(entity ent, int map)
 {
 	// open rtl and allocate walls buffer
@@ -328,6 +330,18 @@ void make_rott_map(entity ent, int map)
 	// get level z height
 	int level_height = planespot(sprites, 0, 0);
 	level_height = convert_level_height(level_height);
+
+	// get level song
+	for (int x = 0; x < RTL_MAP_WIDTH; x++)
+	{
+		int infotile = planespot(infos, x, 0);
+
+		if (infotile >> 8 == 0xBA)
+		{
+			mapsong = infotile & 0xFF;
+			break;
+		}
+	}
 
 	// add floor
 	int level_floor = planespot(walls, 0, 0);
