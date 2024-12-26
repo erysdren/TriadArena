@@ -51,10 +51,12 @@ void CSQC_UpdateView(float vwidth, float vheight, float notmenu)
 	glsl_userdata[1][3] = getproperty(VF_SIZE_Y);
 	setproperty(VF_USERDATA, &glsl_userdata, sizeof(glsl_userdata));
 
+#if (VIEWSKEW == 1)
 	// setup viewport
 	setproperty(VF_VIEWPORT, [0, -(vheight / 2) - (getproperty(VF_ANGLES_X) * 2)], [vwidth, vheight * 2]);
 	setproperty(VF_ANGLES_X, 0);
 	setproperty(VF_AFOV, 110);
+#endif
 
 	// setup other properties
 	setproperty(VF_DRAWENGINESBAR, FALSE);

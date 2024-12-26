@@ -2,6 +2,8 @@
 #define CSQC
 #pragma progs_dat "../csprogs.dat"
 
+#define VIEWSKEW 0
+
 #includelist
 
 	shared/fteextensions.qc
