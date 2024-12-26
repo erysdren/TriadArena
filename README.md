@@ -13,7 +13,7 @@ Place these in `triadarena/data/`.
 
 ## Optional Files
 
-Place these in `triadarena/`.
+Place these in `triadarena/data/`.
 
 ```
 a42981968674c7751f4bcecba3a0a01bcdaff1c77016bc70a6efef85990db2eb  rott_sc55.zip

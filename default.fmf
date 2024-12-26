@@ -6,7 +6,7 @@ PROTOCOLNAME "TRIAD-ARENA"
 DISABLEHOMEDIR 1
 MAINCONFIG "config.cfg"
 
-PACKAGE "triadarena/rottgoodies.zip" 0xf5e403ff "https://archive.org/download/rottgoodies/rottgoodies.exe" "ftp://ftp.3drealms.com/misc/rottgoodies.exe"
-PACKAGE "triadarena/rott_sc55.zip" 0x4fa37247 "https://sc55.duke4.net/ogg/rott_sc55.zip"
-INSTALL "triadarena/rottgoodies.zip"
-INSTALL "triadarena/rott_sc55.zip"
+PACKAGE "triadarena/data/rottgoodies.zip" 0xf5e403ff "https://archive.org/download/rottgoodies/rottgoodies.exe" "ftp://ftp.3drealms.com/misc/rottgoodies.exe"
+PACKAGE "triadarena/data/rott_sc55.zip" 0x4fa37247 "https://sc55.duke4.net/ogg/rott_sc55.zip"
+INSTALL "triadarena/data/rottgoodies.zip"
+INSTALL "triadarena/data/rott_sc55.zip"
