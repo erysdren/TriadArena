@@ -109,6 +109,15 @@ static int get_song_for_type(int songtype)
 	return -1;
 }
 
+static int get_song_for_name(string name)
+{
+	for (int i = 0; i < songs.length; i++)
+		if (songs[i].name == name)
+			return i;
+
+	return -1;
+}
+
 void song_play_type(int songtype, int levelindex=-1)
 {
 	if (songtype == SONG_TYPE_LEVEL)
