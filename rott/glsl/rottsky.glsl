@@ -20,7 +20,6 @@
 		vec3 angles = w_user[0].xyz;
 
 		vec2 screensize = textureSize(s_t0, 0);
-		vec2 skysize = textureSize(s_t1, 0);
 
 		screensize.y *= 2;
 
