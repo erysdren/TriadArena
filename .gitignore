@@ -6,6 +6,7 @@
 
 /*.bat
 /*.dll
+/*.so
 /*.lst
 /*.sh
 /installed.lst
