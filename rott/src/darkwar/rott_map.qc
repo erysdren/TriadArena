@@ -316,10 +316,11 @@ static bool is_platform_index(int in)
 
 var int mapsong = 0;
 
-void make_rott_map(entity ent, int map)
+void make_rott_map(entity ent, string mapset, int map)
 {
 	// open rtl and allocate walls buffer
-	rtl_t *rtl = rtl_open("darkwar.rtl");
+	rtl_t *rtl = rtl_open(mapset);
+	if (!rtl) return;
 	void *walls = memalloc(RTL_MAP_PLANE_SIZE);
 	void *sprites = memalloc(RTL_MAP_PLANE_SIZE);
 	void *infos = memalloc(RTL_MAP_PLANE_SIZE);
