@@ -1,4 +1,4 @@
 exec default.cfg
-exec fte.cfg
+exec config.cfg
 exec autoexec.cfg
 stuffcmds
