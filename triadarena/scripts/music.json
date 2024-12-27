@@ -236,5 +236,12 @@
         "title": "Here Boy",
         "author": "Bobby Prince",
         "index": 33
+    },
+    "NITESTRM": {
+        "loop": true,
+        "type": "bonus",
+        "title": "Night Storm on a Texas Road",
+        "author": "Lee Jackson",
+        "index": 34
     }
 }
