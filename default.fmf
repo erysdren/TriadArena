@@ -5,6 +5,7 @@ NAME "Triad Arena"
 PROTOCOLNAME "TRIAD-ARENA"
 DISABLEHOMEDIR 1
 MAINCONFIG "config.cfg"
+RTCBROKER master.frag-net.com:27950
 
 PACKAGE "triadarena/data/rottgoodies.zip" 0xf5e403ff "https://archive.org/download/rottgoodies/rottgoodies.exe" "ftp://ftp.3drealms.com/misc/rottgoodies.exe"
 PACKAGE "triadarena/data/rott_sc55.zip" 0x4fa37247 "https://sc55.duke4.net/ogg/rott_sc55.zip"
