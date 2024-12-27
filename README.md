@@ -2,6 +2,9 @@
 
 Rise of the Triad (1994)'s multiplayer modes reimplemented in the [FTEQW](https://www.fteqw.org/) engine.
 
+There is an official packages repository for additional levels and goodies,
+which can be found [here](https://github.com/erysdren/TriadArena-Packages).
+
 ## Required Files
 
 Place these in `triadarena/data/`.
@@ -9,15 +12,6 @@ Place these in `triadarena/data/`.
 ```
 471a7b77fd03bbdd43a2dec3ca56034981bcab2eff8d4046bfbaa7b57a186b66  darkwar.rtc
 78761bdc78cb2340b71e3b7b320dbe47e3f7dbcd0eb456fc084973acd582edeb  darkwar.wad
-```
-
-## Optional Files
-
-Place these in `triadarena/data/`.
-
-```
-a42981968674c7751f4bcecba3a0a01bcdaff1c77016bc70a6efef85990db2eb  rott_sc55.zip
-7dc59115f43fc6ae728134198c8bd1e7fe79bbbf6b52b4a394f304011e093eda  rottgoodies.zip
 ```
 
 ## License
