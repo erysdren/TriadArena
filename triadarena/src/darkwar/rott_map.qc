@@ -383,11 +383,11 @@ void make_rott_map(entity ent, string mapset, int map)
 	int level_ceiling = planespot(walls, 1, 0);
 	if (is_sky_index(level_ceiling))
 	{
-		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_sky_texture(level_ceiling), CONTENTBIT_SKY);
+		add_cube(ent, [0, 0, level_height], [64 * RTL_MAP_WIDTH, 64 * RTL_MAP_HEIGHT, 64], convert_sky_texture(level_ceiling), CONTENTBIT_SKY);
 	}
 	else
 	{
-		add_cube(ent, [0, 0, level_height], [64 * 256, 64 * 256, 64], convert_updn_texture(level_ceiling), CONTENTBIT_SOLID);
+		add_cube(ent, [0, 0, level_height], [64 * RTL_MAP_WIDTH, 64 * RTL_MAP_HEIGHT, 64], convert_updn_texture(level_ceiling), CONTENTBIT_SOLID);
 	}
 
 	// add walls
