@@ -344,6 +344,9 @@ void make_rott_map(entity ent, string mapset, int map)
 	}
 	ent.sounds = -1;
 	ent.noise = songs[get_song_for_type(SONG_TYPE_LEVEL) + level_song].name;
+
+	// get level name
+	ent.message = sprintf("%s", rtl.maps[map].name);
 #endif
 
 	// add floor
