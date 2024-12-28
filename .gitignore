@@ -1,6 +1,8 @@
 untracked/
 
 /fteqw-sdl2
+/fteqw64
+
 /fteqw64.exe
 
 /*.bat
@@ -8,14 +10,11 @@ untracked/
 /*.so
 /*.lst
 /*.sh
-/installed.lst
 /conhistory.txt
 /triadarena/fte.cfg
 /triadarena/config.cfg
 /triadarena/*.sav
 /triadarena/*.lno
-/triadarena/rottgoodies.zip
-/triadarena/rott_sc55.zip
 /triadarena/csqccore.txt
 /triadarena/saves/
 /triadarena/data/
