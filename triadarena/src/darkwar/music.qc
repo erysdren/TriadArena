@@ -100,7 +100,7 @@ void song_play(int i)
 #endif
 }
 
-static int get_song_for_type(int songtype)
+int get_song_for_type(int songtype)
 {
 	for (int i = 0; i < songs.length; i++)
 		if (songs[i].type == songtype)
@@ -109,7 +109,7 @@ static int get_song_for_type(int songtype)
 	return -1;
 }
 
-static int get_song_for_name(string name)
+int get_song_for_name(string name)
 {
 	for (int i = 0; i < songs.length; i++)
 		if (songs[i].name == name)

@@ -314,8 +314,6 @@ static bool is_platform_index(int in)
 		return false;
 }
 
-var int mapsong = 0;
-
 void make_rott_map(entity ent, string mapset, int map)
 {
 	// open rtl and allocate walls buffer
@@ -329,20 +327,24 @@ void make_rott_map(entity ent, string mapset, int map)
 	rtl_read_map_planes(rtl, map, walls, sprites, infos);
 
 	// get level z height
-	int level_height = planespot(sprites, 0, 0);
-	level_height = convert_level_height(level_height);
+	int level_height = convert_level_height(planespot(sprites, 0, 0));
 
+#ifdef SERVER
 	// get level song
+	int levelsong = 0;
 	for (int x = 0; x < RTL_MAP_WIDTH; x++)
 	{
 		int infotile = planespot(infos, x, 0);
 
 		if (infotile >> 8 == 0xBA)
 		{
-			mapsong = infotile & 0xFF;
+			levelsong = infotile & 0xFF;
 			break;
 		}
 	}
+	ent.sounds = -1;
+	ent.noise = songs[get_song_for_type(SONG_TYPE_LEVEL) + levelsong].name;
+#endif
 
 	// add floor
 	int level_floor = planespot(walls, 0, 0);
