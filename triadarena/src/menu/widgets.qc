@@ -35,3 +35,25 @@ bool widget_button(string id, vector pos, vector size, string text)
 
 	return sui_is_clicked(id);
 }
+
+void widget_maplist(string id, vector pos, vector size, __inout vector scrollofs)
+{
+	searchhandle sh = search_begin("data/*.rtc:*.rtc", SB_FULLPACKAGEPATH | SB_MULTISEARCH, FALSE);
+
+	sui_fill(pos, size, MENU_BG_DARK, 0.75, 0);
+
+	sui_list_view_begin(strcat(id, "scrl"), pos, size, [size.x - 6, 24], search_getsize(sh), scrollofs, [0, 6]);
+
+	vector listitem_pos = [0, 0];
+
+	for (float i = sui_list_item(listitem_pos); i > -1; i = sui_list_item(listitem_pos))
+	{
+		sui_push_frame(listitem_pos, [size.x - 6, 24]);
+		widget_button(strcat(id, ftos(i)), [0, 0], [size.x - 6, 24], search_getfilename(sh, i));
+		sui_pop_frame();
+	}
+
+	sui_list_view_end();
+
+	search_end(sh);
+}
