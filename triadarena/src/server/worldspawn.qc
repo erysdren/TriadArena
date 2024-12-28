@@ -1,9 +1,9 @@
 
-static bool parse_mapname(__inout string mapset, __inout int mapnum)
+static bool parse_mapname(__out string mapset, __out int mapnum)
 {
 	int middle = -1;
 
-	for (int i = 0; i < strlen(mapname); i++)
+	for (int i = strlen(mapname); i >= 0; i--)
 	{
 		if (mapname[i] == '_')
 		{
