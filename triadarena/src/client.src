@@ -1,5 +1,6 @@
 #pragma target fte_5768
 #define CSQC
+#define CLIENT
 #pragma progs_dat "../csprogs.dat"
 
 #define VIEWSKEW 0
