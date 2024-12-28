@@ -8,12 +8,10 @@ void CSQC_RendererRestarted(string rendererdescription)
 
 void CSQC_Init(float apilevel, string enginename, float engineversion)
 {
-	// open DARKWAR.WAD
-	darkwar_wad = wad_open("DARKWAR.WAD");
+	// open darkwar.wad
+	darkwar_wad = wad_open("darkwar.wad");
 	if (!darkwar_wad)
-		darkwar_wad = wad_open("darkwar.wad");
-	if (!darkwar_wad)
-		error("Couldn't open DARKWAR.WAD!\n");
+		error("Couldn't open darkwar.wad!");
 
 	// read palette
 	darkwar_palette = wad_read(darkwar_wad, wad_search(darkwar_wad, "PAL"));
