@@ -5,6 +5,11 @@ Rise of the Triad (1994)'s multiplayer modes reimplemented in the [FTEQW](https:
 There is an official packages repository for additional levels and goodies,
 which can be found [here](https://github.com/erysdren/TriadArena-Packages).
 
+## Todo
+
+- Add support for loading ROTT:LE mapset files.
+- Add support for using shareware game data instead of registered.
+
 ## Required Files
 
 Place these in `triadarena/data/`.
