@@ -1,2 +1,3 @@
 #pragma sourcefile client.src
+#pragma sourcefile menu.src
 #pragma sourcefile server.src

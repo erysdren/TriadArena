@@ -1,0 +1,17 @@
+#pragma target fte_5768
+#define MENU
+#pragma progs_dat "../menu.dat"
+
+#includelist
+
+	shared/fteextensions.qc
+	shared/defs.qc
+	shared/utilities.qc
+
+	menu/sui_sys.qc
+
+	menu/defs.qc
+	menu/widgets.qc
+	menu/main.qc
+
+#endlist
