@@ -331,19 +331,19 @@ void make_rott_map(entity ent, string mapset, int map)
 
 #ifdef SERVER
 	// get level song
-	int levelsong = 0;
+	int level_song = 0;
 	for (int x = 0; x < RTL_MAP_WIDTH; x++)
 	{
 		int infotile = planespot(infos, x, 0);
 
 		if (infotile >> 8 == 0xBA)
 		{
-			levelsong = infotile & 0xFF;
+			level_song = infotile & 0xFF;
 			break;
 		}
 	}
 	ent.sounds = -1;
-	ent.noise = songs[get_song_for_type(SONG_TYPE_LEVEL) + levelsong].name;
+	ent.noise = songs[get_song_for_type(SONG_TYPE_LEVEL) + level_song].name;
 #endif
 
 	// add floor
