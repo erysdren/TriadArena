@@ -267,11 +267,6 @@ static int convert_level_brightness(int in)
 	return 7;
 }
 
-static float remap(float value, vector a, vector b)
-{
-	return b.x + (value - a.x) * (b.y - b.x) / (a.y - a.x);
-}
-
 static string light_levels[] = {
 	"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
 	"p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
