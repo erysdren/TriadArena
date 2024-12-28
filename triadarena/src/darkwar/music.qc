@@ -70,36 +70,6 @@ const song_t songs[] = {
 	{ SONG_LOOP_YES, SONG_TYPE_DOGEND,     "HERE_BOY", "Here Boy",                "Bobby Prince" }
 };
 
-var int song_playing = 0;
-
-void song_print(int i)
-{
-	if (i < 0 || i >= songs.length)
-	{
-		i = song_playing;
-		printf("NOW PLAYING ");
-	}
-
-	printf("SONG %i: \"%s\" by %s\n", i, songs[i].title, songs[i].author);
-}
-
-void song_play(int i)
-{
-	if (i < 0 || i >= songs.length)
-		return;
-
-#ifdef CSQC
-	if (songs[i].loop == SONG_LOOP_YES)
-		localcmdf("music %s\n", songs[i].name);
-	else
-		localcmdf("music %s 1\n", songs[i].name);
-	song_playing = i;
-	song_print(-1);
-#else
-	// ?
-#endif
-}
-
 int get_song_for_type(int songtype)
 {
 	for (int i = 0; i < songs.length; i++)
@@ -116,19 +86,4 @@ int get_song_for_name(string name)
 			return i;
 
 	return -1;
-}
-
-void song_play_type(int songtype, int levelindex=-1)
-{
-	if (songtype == SONG_TYPE_LEVEL)
-	{
-		if (levelindex == -1)
-			return;
-
-		song_play(get_song_for_type(songtype) + levelindex);
-	}
-	else
-	{
-		song_play(get_song_for_type(songtype));
-	}
 }

@@ -20,9 +20,6 @@ void CSQC_Init(float apilevel, string enginename, float engineversion)
 	// read palette
 	lump = wad_search(darkwar_wad, "PAL");
 	darkwar_palette = wad_read(darkwar_wad, lump);
-
-	registercommand("song_play");
-	registercommand("song_info");
 }
 
 void CSQC_Shutdown(void)
@@ -82,21 +79,6 @@ float CSQC_ConsoleCommand(string cmd)
 
 	switch (argv(0))
 	{
-		case "song_play":
-		{
-			song_play(stoi(argv(1)));
-			return TRUE;
-		}
-
-		case "song_info":
-		{
-			if (argc < 2)
-				song_print(-1);
-			else
-				song_print(stoi(argv(1)));
-			return TRUE;
-		}
-
 		default:
 		{
 			return FALSE;
@@ -110,11 +92,8 @@ void CSQC_Parse_Event(void)
 
 	switch (event)
 	{
-		case EVENT_MUSIC_START:
+		default:
 		{
-			int songtype = readbyte();
-			int levelsong = readbyte();
-			song_play_type(songtype, levelsong);
 			break;
 		}
 	}

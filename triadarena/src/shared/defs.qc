@@ -20,10 +20,6 @@ const string player_character_names[] = {
 
 typedef enum {false, true} bool;
 
-enum {
-	EVENT_MUSIC_START
-};
-
 #define NULL __NULL__
 
 #define printf(...) print(sprintf(__VA_ARGS__))
