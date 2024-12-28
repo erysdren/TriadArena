@@ -5,7 +5,7 @@ static bool parse_mapname(__inout string mapset, __inout int mapnum)
 
 	for (int i = 0; i < strlen(mapname); i++)
 	{
-		if (mapname[i] == '#')
+		if (mapname[i] == '_')
 		{
 			middle = i;
 			break;
