@@ -21,7 +21,7 @@ wad_t *wad_allocate(uint32_t num_lumps)
 {
 	// sanity check
 	if (!num_lumps)
-		return NULL;
+		return __NULL__;
 
 	// allocate wad
 	wad_t *wad = memalloc(sizeof(wad_t));
@@ -50,42 +50,42 @@ wad_t *wad_open(string filename)
 	if (!(file = fopen(filename, FILE_READ)))
 	{
 		print("WAD ERROR: Couldn't open ", filename, "!\n");
-		return NULL;
+		return __NULL__;
 	}
 
 	// read magic
 	if (fread(file, (void *)&magic, sizeof(uint32_t)) != sizeof(uint32_t))
 	{
 		print("WAD ERROR: Couldn't read bytes from file!\n");
-		return NULL;
+		return __NULL__;
 	}
 
 	// test magic
 	if (magic != IWAD_MAGIC && magic != PWAD_MAGIC)
 	{
 		print("WAD ERROR: ", filename, " does not have the IWAD or PWAD header!\n");
-		return NULL;
+		return __NULL__;
 	}
 
 	// read num_lumps
 	if (fread(file, (void *)&num_lumps, sizeof(uint32_t)) != sizeof(uint32_t))
 	{
 		print("WAD ERROR: Couldn't read bytes from file!\n");
-		return NULL;
+		return __NULL__;
 	}
 
 	// read ofs_lumps
 	if (fread(file, (void *)&ofs_lumps, sizeof(uint32_t)) != sizeof(uint32_t))
 	{
 		print("WAD ERROR: Couldn't read bytes from file!\n");
-		return NULL;
+		return __NULL__;
 	}
 
 	// allocate wad structure
 	if (!(wad = wad_allocate(num_lumps)))
 	{
 		print("WAD ERROR: Couldn't allocate WAD structure!\n");
-		return NULL;
+		return __NULL__;
 	}
 
 	// read lumps
@@ -158,16 +158,16 @@ void *wad_read(wad_t *wad, int lump)
 
 	// sanity checks
 	if (!wad)
-		return NULL;
+		return __NULL__;
 	if (!wad->file)
-		return NULL;
+		return __NULL__;
 	if (lump < 0 || lump >= wad->num_lumps)
-		return NULL;
+		return __NULL__;
 
 	// allocate buffer
 	r = memalloc(wad->lumps[lump].len);
 	if (!r)
-		return NULL;
+		return __NULL__;
 
 	// read lump into buffer
 	fseek(wad->file, wad->lumps[lump].ofs);
