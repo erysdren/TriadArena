@@ -1,4 +1,2 @@
-#pragma target fte_5768
-
 #pragma sourcefile client.src
 #pragma sourcefile server.src
