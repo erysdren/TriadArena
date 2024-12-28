@@ -260,6 +260,28 @@ static string convert_sky_texture(int in)
 	return texnames[in - 234];
 }
 
+static int convert_level_brightness(int in)
+{
+	if (in >= 216 && in <= 223)
+		return in - 216;
+	return 7;
+}
+
+static float remap(float value, vector a, vector b)
+{
+	return b.x + (value - a.x) * (b.y - b.x) / (a.y - a.x);
+}
+
+static string light_levels[] = {
+	"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+	"p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+};
+
+static string remap_level_brightness(int in)
+{
+	return light_levels[rint(remap(in, [0, 7], [6, light_levels.length - 13]))];
+}
+
 static vector dir_to_angles(int dir)
 {
 	static const vector dirs[] = {
@@ -347,6 +369,10 @@ void make_rott_map(entity ent, string mapset, int map)
 
 	// get level name
 	ent.message = sprintf("%s", rtl.maps[map].name);
+
+	// get level lighting
+	int level_brightness = convert_level_brightness(planespot(walls, 2, 0));
+	lightstyle(0, remap_level_brightness(level_brightness));
 #endif
 
 	// add floor
