@@ -377,7 +377,7 @@ void make_rott_map(entity ent, string mapset, int map)
 
 	// add floor
 	int level_floor = planespot(walls, 0, 0);
-	add_cube(ent, [0, 0, -1], [64 * 128, 64 * 128, 64], convert_updn_texture(level_floor), CONTENTBIT_SOLID);
+	add_cube(ent, [0, 0, -1], [64 * RTL_MAP_WIDTH, 64 * RTL_MAP_HEIGHT, 64], convert_updn_texture(level_floor), CONTENTBIT_SOLID);
 
 	// add ceiling
 	int level_ceiling = planespot(walls, 1, 0);
