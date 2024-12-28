@@ -21,3 +21,23 @@ float remap(float value, vector a, vector b)
 {
 	return b.x + (value - a.x) * (b.y - b.x) / (a.y - a.x);
 }
+
+__variant *memrealloc(__variant *ptr, int oldsize, int newsize)
+{
+	if (!newsize)
+	{
+		memfree(ptr);
+		return __NULL__;
+	}
+	else if (!ptr)
+	{
+		return memalloc(newsize);
+	}
+	else
+	{
+		void *ret = memalloc(newsize);
+		memcpy(ret, ptr, min(oldsize, newsize));
+		memfree(ptr);
+		return ret;
+	}
+}
