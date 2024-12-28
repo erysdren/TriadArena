@@ -64,7 +64,7 @@ void m_draw(vector screensize)
 		return;
 
 	sui_begin(screensize.x, screensize.y);
-	sui_fill([0, 0], screensize, [0, 0, 0], 0.5, DRAWFLAG_NORMAL);
+	sui_fill([0, 0], screensize, [0, 0, 0], 0.75, DRAWFLAG_NORMAL);
 	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
 	widget_button("m_main_start", [0, 0], [128, 32], "START") ? localcmd("map darkwar.rtc_0.map\n") : 0;
 	sui_end();
