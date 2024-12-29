@@ -80,7 +80,10 @@ void m_draw(vector screensize)
 	sui_fill([0, 0], screensize, [0, 0, 0], 0.75, DRAWFLAG_NORMAL);
 
 	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_START]);
-	widget_button("m_main_rebuildmapcache", [0, 8], [128, 24], "Rescan Maps") ? mapcache_rebuild() : 0;
+	sui_push_frame([0, 0], [screensize.x * 0.75, screensize.y - (screensize.y * (0.75 + 0.125))]);
+	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
+	widget_button("m_main_rebuildmapcache", [0, 0], [128, 24], "Rescan Maps") ? mapcache_rebuild() : 0;
+	sui_pop_frame();
 
 	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
 	static vector scrollofs = [0, 0];
