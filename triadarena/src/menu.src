@@ -8,9 +8,12 @@
 	shared/defs.qc
 	shared/utilities.qc
 
+	darkwar/rtl.qc
+
 	menu/sui_sys.qc
 
 	menu/defs.qc
+	menu/mapcache.qc
 	menu/widgets.qc
 	menu/main.qc
 

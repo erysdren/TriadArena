@@ -17,6 +17,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+typedef struct map {
+	string name;
+	string package;
+	string title;
+} map_t;
+
 const vector MENU_BG = [0.2, 0.3, 0.4];
 const vector MENU_BG_DARK = [0.1, 0.15, 0.2];
 const vector MENU_BORDER = [0.3, 0.4, 0.5];

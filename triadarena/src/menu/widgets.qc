@@ -36,24 +36,42 @@ bool widget_button(string id, vector pos, vector size, string text)
 	return sui_is_clicked(id);
 }
 
-void widget_maplist(string id, vector pos, vector size, __inout vector scrollofs)
+static bool mapbutton(string id, vector pos, vector size, map_t *map)
 {
-	searchhandle sh = search_begin("data/*.rtc:*.rtc", SB_FULLPACKAGEPATH | SB_MULTISEARCH, FALSE);
+	sui_push_frame(pos, size);
 
+	vector color = sui_is_hovered(id) ? MENU_BUTTON + MENU_HIGHLIGHT * 0.1 : MENU_BUTTON;
+	color = sui_is_held(id) ? MENU_BUTTON - MENU_DARKEN * 0.1 : color;
+	sui_fill([0, 0], size, color, 0.6, 0);
+	sui_border_box([0, 0], size, 1, MENU_BUTTON_BORDER, 0.4, 0);
+
+	sui_set_align([SUI_ALIGN_START, SUI_ALIGN_CENTER]);
+	sui_text([8, 0], MENU_TEXT_SMALL, map.title, MENU_TEXT_1, 1, 0);
+
+	sui_set_align([SUI_ALIGN_END, SUI_ALIGN_CENTER]);
+	sui_text([-8, 0], MENU_TEXT_SMALL, map.package, MENU_TEXT_1, 1, 0);
+
+	sui_action_element([0, 0], size, id, sui_noop);
+	sui_pop_frame();
+
+	return sui_is_clicked(id);
+}
+
+void widget_mapcache(string id, vector pos, vector size, __inout vector scrollofs)
+{
 	sui_fill(pos, size, MENU_BG_DARK, 0.75, 0);
 
-	sui_list_view_begin(strcat(id, "scrl"), pos, size, [size.x - 6, 24], search_getsize(sh), scrollofs, [0, 6]);
+	sui_list_view_begin(strcat(id, "scrl"), pos, size, [size.x - 6, 24], num_mapcache, scrollofs, [0, 6]);
 
 	vector listitem_pos = [0, 0];
 
 	for (float i = sui_list_item(listitem_pos); i > -1; i = sui_list_item(listitem_pos))
 	{
 		sui_push_frame(listitem_pos, [size.x - 6, 24]);
-		widget_button(strcat(id, ftos(i)), [0, 0], [size.x - 6, 24], search_getfilename(sh, i));
+		sui_set_align([SUI_ALIGN_START, SUI_ALIGN_CENTER]);
+		mapbutton(strcat(id, ftos(i)), [0, 0], [size.x - 6, 24], &mapcache[i]) ? localcmdf("map %s\n", mapcache[i].name) : 0;
 		sui_pop_frame();
 	}
 
 	sui_list_view_end();
-
-	search_end(sh);
 }

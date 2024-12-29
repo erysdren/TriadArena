@@ -42,11 +42,24 @@ void m_toggle(float wantmode)
 void m_init(void)
 {
 	setwindowcaption("Triad Arena");
+
+	// load or build mapcache
+	if (!mapcache_load())
+		if (!mapcache_build())
+			error("Failed to build map cache!");
+		else
+			if (!mapcache_save())
+				error("Failed to save map cache!");
 }
 
 void m_shutdown(void)
 {
+	// save mapcache if the user rebuilt it
+	if (!mapcache_save())
+		error("Failed to save map cache!");
 
+	// clear mapcache
+	mapcache_clear();
 }
 
 void m_drawloading(vector screensize, float opaque)
@@ -65,11 +78,13 @@ void m_draw(vector screensize)
 
 	sui_begin(screensize.x, screensize.y);
 	sui_fill([0, 0], screensize, [0, 0, 0], 0.75, DRAWFLAG_NORMAL);
-	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
 
-	// static vector scrollofs = [0, 0];
-	// widget_maplist("m_main_maplist", [0, 0], screensize / 2, scrollofs);
-	widget_button("m_main_start", [0, 0], [128, 32], "START") ? localcmd("map darkwar.rtc_0.map\n") : 0;
+	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_START]);
+	widget_button("m_main_rebuildmapcache", [0, 8], [128, 24], "Rescan Maps") ? mapcache_rebuild() : 0;
+
+	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
+	static vector scrollofs = [0, 0];
+	widget_mapcache("m_main_mapcache", [0, 0], screensize * 0.75, scrollofs);
 	sui_end();
 }
 
