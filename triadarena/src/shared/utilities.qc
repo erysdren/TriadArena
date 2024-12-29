@@ -22,6 +22,11 @@ float remap(float value, vector a, vector b)
 	return b.x + (value - a.x) * (b.y - b.x) / (a.y - a.x);
 }
 
+string strdup(string s)
+{
+	return sprintf("%s", s);
+}
+
 __variant *memrealloc(__variant *ptr, int oldsize, int newsize)
 {
 	if (!newsize)
