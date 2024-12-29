@@ -81,13 +81,22 @@ void m_draw(vector screensize)
 
 	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_START]);
 	sui_push_frame([0, 0], [screensize.x * 0.75, screensize.y - (screensize.y * (0.75 + 0.125))]);
-	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
+	sui_set_align([SUI_ALIGN_START, SUI_ALIGN_CENTER]);
 	widget_button("m_main_rebuildmapcache", [0, 0], [128, 24], "Rescan Maps") ? mapcache_rebuild() : 0;
+	sui_set_align([SUI_ALIGN_END, SUI_ALIGN_CENTER]);
+	widget_button("m_main_packages", [0, 0], [128, 24], "Browse Packages") ? localcmd("menu_download\n") : 0;
 	sui_pop_frame();
 
 	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
 	static vector scrollofs = [0, 0];
 	widget_mapcache("m_main_mapcache", [0, 0], screensize * 0.75, scrollofs);
+
+	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_END]);
+	sui_push_frame([0, 0], [screensize.x * 0.75, screensize.y - (screensize.y * (0.75 + 0.125))]);
+	sui_set_align([SUI_ALIGN_CENTER, SUI_ALIGN_CENTER]);
+	widget_button("m_main_quit", [0, 0], [128, 24], "Quit") ? localcmd("quit\n") : 0;
+	sui_pop_frame();
+
 	sui_end();
 }
 
