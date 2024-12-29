@@ -36,7 +36,7 @@ __variant *memrealloc(__variant *ptr, int oldsize, int newsize)
 	else
 	{
 		void *ret = memalloc(newsize);
-		memcpy(ret, ptr, min(oldsize, newsize));
+		memcpy(ret, ptr, oldsize > newsize ? newsize : oldsize);
 		memfree(ptr);
 		return ret;
 	}
