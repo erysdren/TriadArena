@@ -11,6 +11,7 @@ untracked/
 /*.lst
 /*.sh
 /conhistory.txt
+/triadarena/RottEX.kpf
 /triadarena/fte.cfg
 /triadarena/config.cfg
 /triadarena/*.sav
