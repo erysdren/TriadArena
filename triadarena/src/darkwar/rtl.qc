@@ -20,14 +20,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // rtl format constants
 const uint32_t RTL_MAGIC = 0x4c5452u;
 const uint32_t RTC_MAGIC = 0x435452u;
+const uint32_t RTR_MAGIC = 0x525452;
+const uint32_t RXL_MAGIC = 0x4C5852u;
+const uint32_t RXC_MAGIC = 0x435852u;
 const uint32_t RTL_VERSION = 0x0101u;
+const uint32_t RXL_VERSION = 0x0200u;
 const uint32_t RTL_TAG_REGISTERED = 0x4344u;
 const uint32_t RTL_TAG_SHAREWARE = 0x4d4bu;
 const uint32_t RTL_MAP_WIDTH = 128u;
 const uint32_t RTL_MAP_HEIGHT = 128u;
 const uint32_t RTL_MAP_PLANE_SIZE = 32768u;
 const uint32_t RTL_NUM_MAPS = 100u;
-const uint32_t RTL_MAP_RESERVED_TILES = 5u;
 
 // rtl map structure
 typedef struct {
@@ -46,74 +49,118 @@ typedef struct {
 
 // rtl structure
 typedef struct {
-	rtl_map_t maps[RTL_NUM_MAPS];
 	filestream file;
+	bool ludicrous;
+	bool commbat;
+	bool shareware;
+	bool randrott;
+	rtl_map_t maps[RTL_NUM_MAPS];
 } rtl_t;
+
+static bool test_magic(filestream file)
+{
+	uint32_t magic;
+	fseek(file, 0);
+	fread(file, (void *)&magic, sizeof(uint32_t));
+	return magic == RTL_MAGIC ||
+		magic == RTC_MAGIC ||
+		magic == RTR_MAGIC ||
+		magic == RXL_MAGIC ||
+		magic == RXC_MAGIC;
+}
+
+static bool test_version(filestream file)
+{
+	uint32_t version;
+	fseek(file, 4);
+	fread(file, (void *)&version, sizeof(uint32_t));
+	return version == RTL_VERSION || version == RXL_VERSION;
+}
+
+static bool test_ludicrous(filestream file)
+{
+	uint32_t magic, version;
+	fseek(file, 0);
+	fread(file, (void *)&magic, sizeof(uint32_t));
+	fread(file, (void *)&version, sizeof(uint32_t));
+	return magic == RXL_MAGIC ||
+		magic == RXC_MAGIC ||
+		version == RXL_VERSION;
+}
+
+static bool test_commbat(filestream file)
+{
+	uint32_t magic;
+	fseek(file, 0);
+	fread(file, (void *)&magic, sizeof(uint32_t));
+	return magic == RTC_MAGIC ||
+		magic == RXC_MAGIC;
+}
+
+static bool test_shareware(filestream file)
+{
+	for (int i = 0; i < RTL_NUM_MAPS; i++)
+	{
+		// seek right to crc for each map
+		uint32_t crc;
+		fseek(file, 4 + 8 + (i * 64));
+		fread(file, (void *)&crc, sizeof(uint32_t));
+		if (crc == RTL_TAG_SHAREWARE)
+			return true;
+	}
+
+	return false;
+}
+
+static bool test_randrott(filestream file)
+{
+	uint32_t magic;
+	fseek(file, 0);
+	fread(file, (void *)&magic, sizeof(uint32_t));
+	return magic == RTR_MAGIC;
+}
 
 // open rtl from filename
 rtl_t *rtl_open(string filename)
 {
-	uint32_t magic;
-	uint32_t version;
-	filestream file;
-	rtl_t *rtl;
-	int i;
-
 	// open file
-	if (!(file = fopen(filename, FILE_READ)))
-	{
-		print("RTL ERROR: Couldn't open ", filename, "!\n");
-		return __NULL__;
-	}
-
-	// read magic
-	if (fread(file, (void *)&magic, sizeof(uint32_t)) != sizeof(uint32_t))
-	{
-		print("RTL ERROR: Couldn't read bytes from file!\n");
-		return __NULL__;
-	}
+	filestream file = fopen(filename, FILE_READ);
+	if (file < 0)
+		errorf("couldn't open \"%s\"", filename);
 
 	// test magic
-	if (magic != RTL_MAGIC && magic != RTC_MAGIC)
-	{
-		print("WAD ERROR: ", filename, " does not have the RTL or RTC header!\n");
-		return __NULL__;
-	}
-
-	// read version
-	if (fread(file, (void *)&version, sizeof(uint32_t)) != sizeof(uint32_t))
-	{
-		print("RTL ERROR: Couldn't read bytes from file!\n");
-		return __NULL__;
-	}
+	if (!test_magic(file))
+		errorf("\"%s\" is not a valid ROTT mapset (invalid signature)", filename);
 
 	// test version
-	if (version != RTL_VERSION)
-	{
-		print("RTL ERROR: ", filename, " is not the correct RTL version!\n");
-		return __NULL__;
-	}
+	if (!test_version(file))
+		errorf("\"%s\" is not a valid ROTT mapset (invalid version)", filename);
 
 	// allocate rtl structure
-	if (!(rtl = memalloc(sizeof(rtl_t))))
-	{
-		print("RTL ERROR: Couldn't allocate RTL structure!\n");
-		return __NULL__;
-	}
+	rtl_t *rtl = memalloc(sizeof(rtl_t));
 
 	// read maps
-	for (i = 0; i < RTL_NUM_MAPS; i++)
+	fseek(file, 8);
+	for (int i = 0; i < RTL_NUM_MAPS; i++)
 	{
-		// read main map structuer
-		fread(file, (void *)&rtl->maps[i], sizeof(rtl_map_t) - sizeof(string));
+		// read main map structure
+		fread(file, (void *)&rtl.maps[i], sizeof(rtl_map_t) - sizeof(string));
 
 		// allocate and read name string
-		rtl->maps[i].name = (string)memalloc(25);
-		fread(file, (void *)rtl->maps[i].name, 24);
+		void *name = memalloc(25);
+		fread(file, name, 24);
+		rtl.maps[i].name = strdup((string)name);
+		memfree(name);
 	}
 
-	// add file handle to rtl structure
-	rtl->file = file;
+	// setup details
+	rtl.ludicrous = test_ludicrous(file);
+	rtl.commbat = test_commbat(file);
+	rtl.shareware = test_shareware(file);
+	rtl.randrott = test_randrott(file);
+
+	// save file handle
+	rtl.file = file;
 
 	return rtl;
 }
@@ -121,24 +168,13 @@ rtl_t *rtl_open(string filename)
 // close rtl and free memory
 void rtl_close(rtl_t *rtl)
 {
-	int i;
-
 	// sanity check
 	if (!rtl)
 		return;
 
 	// close file handle
-	if (rtl->file)
-		fclose(rtl->file);
-
-	// free name strings
-	for (i = 0; i < RTL_NUM_MAPS; i++)
-	{
-		if (!rtl->maps[i].used)
-			continue;
-
-		memfree((void *)rtl->maps[i].name);
-	}
+	if (rtl.file >= 0)
+		fclose(rtl.file);
 
 	// free rtl
 	memfree(rtl);
@@ -151,18 +187,18 @@ static void rtl_read_plane(filestream file, uint32_t ofs, uint32_t len, uint32_t
 	fseek(file, ofs);
 
 	// read plane data
-	int pos = 0;
-	int written = 0;
+	uint32_t pos = 0;
+	uint32_t written = 0;
 	while (pos < len && written < RTL_MAP_PLANE_SIZE)
 	{
 		// read test value
-		uint32_t test;
+		uint32_t test = 0;
 		fread(file, (void *)&test, 2);
 
 		if (test == tag)
 		{
 			// read compressed data
-			uint32_t rle_len, rle_value;
+			uint32_t rle_len = 0, rle_value = 0;
 			fread(file, (void *)&rle_len, 2);
 			fread(file, (void *)&rle_value, 2);
 
@@ -197,18 +233,18 @@ void rtl_read_map_planes(rtl_t *rtl, int map, void *walls, void *sprites, void *
 		return;
 	if (map < 0 || map >= RTL_NUM_MAPS)
 		return;
-	if (!rtl->maps[map].used)
+	if (!rtl.maps[map].used)
 		return;
 
 	// read walls
 	if (walls)
-		rtl_read_plane(rtl->file, rtl->maps[map].ofs_walls, rtl->maps[map].len_walls, rtl->maps[map].tag, walls);
+		rtl_read_plane(rtl.file, rtl.maps[map].ofs_walls, rtl.maps[map].len_walls, rtl.maps[map].tag, walls);
 
 	// read sprites
 	if (sprites)
-		rtl_read_plane(rtl->file, rtl->maps[map].ofs_sprites, rtl->maps[map].len_sprites, rtl->maps[map].tag, sprites);
+		rtl_read_plane(rtl.file, rtl.maps[map].ofs_sprites, rtl.maps[map].len_sprites, rtl.maps[map].tag, sprites);
 
 	// read infos
 	if (infos)
-		rtl_read_plane(rtl->file, rtl->maps[map].ofs_infos, rtl->maps[map].len_infos, rtl->maps[map].tag, infos);
+		rtl_read_plane(rtl.file, rtl.maps[map].ofs_infos, rtl.maps[map].len_infos, rtl.maps[map].tag, infos);
 }
