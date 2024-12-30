@@ -1,0 +1,4 @@
+"Language: en"
+
+msgid "m_game_title"
+msgstr "Triad Arena"

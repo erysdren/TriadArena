@@ -41,7 +41,8 @@ void m_toggle(float wantmode)
 
 void m_init(void)
 {
-	setwindowcaption("Triad Arena");
+	// set window title
+	setwindowcaption(_("m_game_title"));
 
 	// load or build mapcache
 	if (!mapcache_load())

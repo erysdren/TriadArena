@@ -26,6 +26,9 @@ void CSQC_RendererRestarted(string rendererdescription)
 
 void CSQC_Init(float apilevel, string enginename, float engineversion)
 {
+	// set window title
+	setwindowcaption(_("m_game_title"));
+
 	// open darkwar.wad
 	darkwar_wad = wad_open("darkwar.wad");
 	if (!darkwar_wad)
