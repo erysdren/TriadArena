@@ -56,8 +56,8 @@ static void generate_texcoords(brushface_t *face, vector brush_min, vector brush
 		tcorner[i] = (face->tdir[i] > 0) ? brush_min[i] : brush_max[i];
 	}
 
-	face->sbias = scorner * face->sdir;
-	face->tbias = tcorner * face->tdir;
+	face->sbias -= scorner * face->sdir;
+	face->tbias -= tcorner * face->tdir;
 }
 
 static int add_cube(entity ent, vector pos, vector brush_size, string texture, int contents)
