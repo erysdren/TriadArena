@@ -17,9 +17,93 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#if 0
+static bool is_floor_texture(string shadername)
+{
+	static const string texnames[] = {
+		"FLRCL1",
+		"FLRCL2",
+		"FLRCL3",
+		"FLRCL4",
+		"FLRCL5",
+		"FLRCL6",
+		"FLRCL7",
+		"FLRCL8",
+		"FLRCL9",
+		"FLRCL10",
+		"FLRCL11",
+		"FLRCL12",
+		"FLRCL13",
+		"FLRCL14",
+		"FLRCL15",
+		"FLRCL16"
+	};
+
+	for (int i = 0; i < texnames.length; i++)
+		if (shadername == texnames[i])
+			return true;
+
+	return false;
+}
+
+static bool is_animwall_texture(string shadername)
+{
+	static const string texnames[] = {
+		"FPLACE",
+		"ANIMY",
+		"ANIMR",
+		"ANIMFAC",
+		"ANIMONE",
+		"ANIMTWO",
+		"ANIMTHR",
+		"ANIMFOR",
+		"ANIMGW",
+		"ANIMYOU",
+		"ANIMBW",
+		"ANIMBP",
+		"ANIMCHN",
+		"ANIMFW",
+		"ANIMLAT",
+		"ANIMST",
+		"ANIMRP"
+	};
+
+	for (int i = 0; i < texnames.length; i++)
+		if (shadername == texnames[i])
+			return true;
+
+	return false;
+}
+
+string CSQC_GenerateMaterial(string shadername)
+{
+	if (is_floor_texture(shadername))
+	{
+		upload_lpic_texture(shadername);
+		return sprintf("program defaultwall\ndiffusemap $rt:$nearest:%s", shadername);
+	}
+	else if (is_animwall_texture(shadername))
+	{
+		// upload frames
+		for (int i = 1; i <= 6; i++)
+			upload_wall_texture(sprintf("%s%i", shadername, i));
+
+		// create shader
+		string shader = sprintf("{\nanimmap %0.2f ", 0.25);
+		for (int i = 1; i <= 6; i++)
+			shader = sprintf("%s%s ", shader, sprintf("$rt:$nearest:%s%i", shadername, i));
+		shader = sprintf("%s\n}", shader);
+		return shader;
+	}
+
+	return 0;
+}
+#endif
+
 void CSQC_RendererRestarted(string rendererdescription)
 {
 	upload_wall_textures();
+	upload_animwall_textures();
 	upload_floor_textures();
 	upload_sky_textures();
 }

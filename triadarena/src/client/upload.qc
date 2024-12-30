@@ -218,6 +218,20 @@ void upload_wall_texture(string name)
 	memfree(texture32);
 }
 
+void upload_animwall_texture(string name, int n, float rate)
+{
+	// upload frames
+	for (int i = 1; i <= n; i++)
+		upload_wall_texture(sprintf("%s%i", name, i));
+
+	// create shader
+	string shader = sprintf("{\n{\nanimmap %0.2f ", rate);
+	for (int i = 1; i <= n; i++)
+		shader = sprintf("%s%s ", shader, sprintf("$rt:$nearest:%s%i", name, i));
+	shader = sprintf("%s\n}\n}\n", shader);
+	shaderforname(name, shader);
+}
+
 void upload_wall_textures(void)
 {
 	static const string texnames[] = {
@@ -309,6 +323,27 @@ void upload_wall_textures(void)
 
 	for (int i = 0; i < texnames.length; i++)
 		upload_wall_texture(texnames[i]);
+}
+
+void upload_animwall_textures(void)
+{
+	upload_animwall_texture("FPLACE", 4, 0.25);
+	upload_animwall_texture("ANIMY", 6, 0.25);
+	upload_animwall_texture("ANIMR", 6, 0.25);
+	upload_animwall_texture("ANIMFAC", 4, 0.25);
+	upload_animwall_texture("ANIMONE", 4, 0.25);
+	upload_animwall_texture("ANIMTWO", 4, 0.25);
+	upload_animwall_texture("ANIMTHR", 4, 0.25);
+	upload_animwall_texture("ANIMFOR", 4, 0.25);
+	upload_animwall_texture("ANIMGW", 6, 0.25);
+	upload_animwall_texture("ANIMYOU", 6, 0.25);
+	upload_animwall_texture("ANIMBW", 6, 0.25);
+	upload_animwall_texture("ANIMBP", 6, 0.25);
+	upload_animwall_texture("ANIMCHN", 6, 0.25);
+	upload_animwall_texture("ANIMFW", 6, 0.25);
+	upload_animwall_texture("ANIMLAT", 6, 0.25);
+	upload_animwall_texture("ANIMST", 6, 0.25);
+	upload_animwall_texture("ANIMRP", 6, 0.25);
 }
 
 void upload_floor_textures(void)
