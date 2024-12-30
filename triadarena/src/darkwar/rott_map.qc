@@ -239,6 +239,26 @@ static string get_wall_texture(int in)
 		"ELEV8"
 	};
 
+	static const string animwalls[] = {
+		"FPLACE",
+		"ANIMY",
+		"ANIMR",
+		"ANIMFAC",
+		"ANIMONE",
+		"ANIMTWO",
+		"ANIMTHR",
+		"ANIMFOR",
+		"ANIMGW",
+		"ANIMYOU",
+		"ANIMBW",
+		"ANIMBP",
+		"ANIMCHN",
+		"ANIMFW",
+		"ANIMLAT",
+		"ANIMST",
+		"ANIMRP"
+	};
+
 	if ((in >= 1) && (in <= 32))
 		return walls[in - 1];
 	else if ((in >= 36) && (in <= 45))
@@ -253,6 +273,16 @@ static string get_wall_texture(int in)
 		return elevators[in - 72];
 	else if ((in >= 80) && (in <= 89))
 		return walls[in - 16 - 1];
+	else if (in == 44)
+		return animwalls[0];
+	else if (in == 45)
+		return animwalls[3];
+	else if ((in >= 106) && (in <= 107))
+		return animwalls[in - 105];
+	else if ((in >= 224) && (in <= 233))
+		return animwalls[in - 224 + 4];
+	else if ((in >= 242) && (in <= 244))
+		return animwalls[in - 242 + 14];
 	else
 		return "";
 }
