@@ -125,7 +125,7 @@ bool mapcache_build(void)
 					// setup mapcache values
 					mapcache[num_mapcache].package = package_title;
 					mapcache[num_mapcache].name = sprintf("%s_%i.map", search_getfilename(sh, j), k);
-					mapcache[num_mapcache].title = strdup(rtl.maps[k].name);
+					mapcache[num_mapcache].title = rtl.maps[k].name;
 
 					// advance
 					num_mapcache++;
