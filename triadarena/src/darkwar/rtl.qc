@@ -44,12 +44,13 @@ typedef struct {
 	uint32_t len_walls;
 	uint32_t len_sprites;
 	uint32_t len_infos;
-	string name;
+	uint8_t name[24];
 } rtl_map_t;
 
 // rtl structure
 typedef struct {
 	filestream file;
+	jsonnode info;
 	bool ludicrous;
 	bool commbat;
 	bool shareware;
@@ -61,7 +62,7 @@ static bool test_magic(filestream file)
 {
 	uint32_t magic;
 	fseek(file, 0);
-	fread(file, (void *)&magic, sizeof(uint32_t));
+	fread(file, &magic, sizeof(uint32_t));
 	return magic == RTL_MAGIC ||
 		magic == RTC_MAGIC ||
 		magic == RTR_MAGIC ||
@@ -73,7 +74,7 @@ static bool test_version(filestream file)
 {
 	uint32_t version;
 	fseek(file, 4);
-	fread(file, (void *)&version, sizeof(uint32_t));
+	fread(file, &version, sizeof(uint32_t));
 	return version == RTL_VERSION || version == RXL_VERSION;
 }
 
@@ -81,8 +82,8 @@ static bool test_ludicrous(filestream file)
 {
 	uint32_t magic, version;
 	fseek(file, 0);
-	fread(file, (void *)&magic, sizeof(uint32_t));
-	fread(file, (void *)&version, sizeof(uint32_t));
+	fread(file, &magic, sizeof(uint32_t));
+	fread(file, &version, sizeof(uint32_t));
 	return magic == RXL_MAGIC ||
 		magic == RXC_MAGIC ||
 		version == RXL_VERSION;
@@ -92,19 +93,21 @@ static bool test_commbat(filestream file)
 {
 	uint32_t magic;
 	fseek(file, 0);
-	fread(file, (void *)&magic, sizeof(uint32_t));
+	fread(file, &magic, sizeof(uint32_t));
 	return magic == RTC_MAGIC ||
 		magic == RXC_MAGIC;
 }
 
 static bool test_shareware(filestream file)
 {
+	uint32_t mapofs = 8;
+
 	for (int i = 0; i < RTL_NUM_MAPS; i++)
 	{
 		// seek right to crc for each map
 		uint32_t crc;
-		fseek(file, 4 + 8 + (i * 64));
-		fread(file, (void *)&crc, sizeof(uint32_t));
+		fseek(file, 4 + mapofs + (i * 64));
+		fread(file, &crc, sizeof(uint32_t));
 		if (crc == RTL_TAG_SHAREWARE)
 			return true;
 	}
@@ -116,8 +119,38 @@ static bool test_randrott(filestream file)
 {
 	uint32_t magic;
 	fseek(file, 0);
-	fread(file, (void *)&magic, sizeof(uint32_t));
+	fread(file, &magic, sizeof(uint32_t));
 	return magic == RTR_MAGIC;
+}
+
+static uint32_t test_mapofs(filestream file)
+{
+	if (test_ludicrous(file))
+	{
+		int64_t ofs_info_headers, num_info_headers;
+		fseek(file, 8);
+		fread(file, &ofs_info_headers, sizeof(int64_t));
+		fread(file, &num_info_headers, sizeof(int64_t));
+		fseek(file, ofs_info_headers);
+
+		for (int i = 0; i < num_info_headers; i++)
+		{
+			uint8_t name[16];
+			int64_t ofs_info_data, len_info_data;
+			fread(file, name, sizeof(name));
+			fread(file, &ofs_info_data, sizeof(int64_t));
+			fread(file, &len_info_data, sizeof(int64_t));
+
+			if ((string)name == "MAPS" || (string)name == "MAPSET")
+				return ofs_info_data;
+		}
+
+		return 24;
+	}
+	else
+	{
+		return 8;
+	}
 }
 
 // open rtl from filename
@@ -140,18 +173,8 @@ rtl_t *rtl_open(string filename)
 	rtl_t *rtl = memalloc(sizeof(rtl_t));
 
 	// read maps
-	fseek(file, 8);
-	for (int i = 0; i < RTL_NUM_MAPS; i++)
-	{
-		// read main map structure
-		fread(file, (void *)&rtl.maps[i], sizeof(rtl_map_t) - sizeof(string));
-
-		// allocate and read name string
-		void *name = memalloc(25);
-		fread(file, name, 24);
-		rtl.maps[i].name = strdup((string)name);
-		memfree(name);
-	}
+	fseek(file, test_mapofs(file));
+	fread(file, rtl.maps, sizeof(rtl.maps));
 
 	// setup details
 	rtl.ludicrous = test_ludicrous(file);
@@ -193,14 +216,14 @@ static void rtl_read_plane(filestream file, uint32_t ofs, uint32_t len, uint32_t
 	{
 		// read test value
 		uint32_t test = 0;
-		fread(file, (void *)&test, 2);
+		fread(file, &test, 2);
 
 		if (test == tag)
 		{
 			// read compressed data
 			uint32_t rle_len = 0, rle_value = 0;
-			fread(file, (void *)&rle_len, 2);
-			fread(file, (void *)&rle_value, 2);
+			fread(file, &rle_len, 2);
+			fread(file, &rle_value, 2);
 
 			// write compressed data
 			for (int r = 0; r < rle_len; r++)
@@ -209,7 +232,7 @@ static void rtl_read_plane(filestream file, uint32_t ofs, uint32_t len, uint32_t
 				buffer += 2;
 			}
 
-			written += rle_len * 2;
+			written += rle_len * 2u;
 		}
 		else
 		{
