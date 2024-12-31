@@ -49,13 +49,12 @@ typedef struct {
 
 // rtl structure
 typedef struct {
+	rtl_map_t maps[RTL_NUM_MAPS];
 	filestream file;
-	jsonnode info;
 	bool ludicrous;
 	bool commbat;
 	bool shareware;
 	bool randrott;
-	rtl_map_t maps[RTL_NUM_MAPS];
 } rtl_t;
 
 static bool test_magic(filestream file)
