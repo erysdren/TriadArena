@@ -146,7 +146,7 @@ void CSQC_UpdateView(float vwidth, float vheight, float notmenu)
 	glsl_userdata[1][1] = getproperty(VF_MIN_Y);
 	glsl_userdata[1][2] = getproperty(VF_SIZE_X);
 	glsl_userdata[1][3] = getproperty(VF_SIZE_Y);
-	setproperty(VF_USERDATA, &glsl_userdata, sizeof(glsl_userdata));
+	setproperty(VF_USERDATA, &glsl_userdata, (int)sizeof(glsl_userdata));
 
 #if (VIEWSKEW == 1)
 	// setup viewport
