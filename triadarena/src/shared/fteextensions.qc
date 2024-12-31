@@ -1490,6 +1490,8 @@ const float LFLAG_NOSHADOWS = 256;
 const float LFLAG_SHADOWMAP = 512;
 const float LFLAG_CREPUSCULAR = 1024;
 const float LFLAG_ORTHOSUN = 2048;
+#endif
+#if defined(CSQC) || defined(SSQC)
 const float TEREDIT_RELOAD = 0;
 const float TEREDIT_SAVE = 1;
 const float TEREDIT_SETHOLE = 2;
@@ -2550,7 +2552,7 @@ vector(vector v1, vector v2) crossproduct = #0:crossproduct; /* Part of FTE_QC_C
 
 #if defined(CSQC) || defined(SSQC)
 float(entity pusher, vector move, vector amove) pushmove = #0:pushmove;
-__variant(float action, optional vector pos, optional float radius, optional float quant, ...) terrain_edit = #278; /* Part of FTE_TERRAIN_MAP
+__variant(float action, ...) terrain_edit = #278; /* Part of FTE_TERRAIN_MAP
 		Realtime terrain editing. Actions are the TEREDIT_ constants. */
 
 typedef struct
