@@ -223,6 +223,41 @@ static string get_wall_texture(int in)
 		"WALL74"
 	};
 
+	static const string walbs[] = {
+		"WALB03",
+		"WALB04",
+		"WALB05",
+		"WALB06",
+		"WALB07",
+		"WALB08",
+		"WALB13",
+		"WALB14",
+		"WALB15",
+		"WALB16",
+		"WALB17",
+		"WALB18",
+		"WALB19",
+		"WALB20",
+		"WALB21",
+		"WALB26",
+		"WALB27",
+		"WALB28",
+		"WALB40",
+		"WALB41",
+		"WALB42",
+		"WALB44",
+		"WALB46",
+		"WALB48",
+		"WALB51",
+		"WALB58",
+		"WALB59",
+		"WALB60",
+		"WALB61",
+		"WALB69",
+		"WALB70",
+		"WALB71"
+	};
+
 	static const string exits[] = {
 		"EXIT",
 		"ENTRANCE"
@@ -381,9 +416,22 @@ static bool is_platform_index(int in)
 
 void make_rott_map(entity ent, string mapset, int map)
 {
-	// open rtl and allocate walls buffer
+	// sanity checks
+	if (map < 0 || map >= RTL_NUM_MAPS)
+		return;
+
 	rtl_t *rtl = rtl_open(mapset);
-	if (!rtl) return;
+
+	if (!rtl)
+		return;
+
+	if (!rtl.maps[map].used)
+	{
+		rtl_close(rtl);
+		return;
+	}
+
+	// allocate buffers
 	void *walls = memalloc(RTL_MAP_PLANE_SIZE);
 	void *sprites = memalloc(RTL_MAP_PLANE_SIZE);
 	void *infos = memalloc(RTL_MAP_PLANE_SIZE);
@@ -411,7 +459,10 @@ void make_rott_map(entity ent, string mapset, int map)
 	ent.noise = songs[get_song_for_type(SONG_TYPE_LEVEL) + level_song].name;
 
 	// get level name
-	ent.message = sprintf("%s", rtl.maps[map].name);
+	ent.message = strdup((string)&rtl.maps[map].name);
+
+	// setup values in terrain_edit
+	terrain_edit(TEREDIT_ENT_SET, ent, sprintf("\"classname\" \"worldspawn\"\n\"message\" \"%s\"\n", ent.message));
 
 	// get level lighting
 	int level_brightness = convert_level_brightness(planespot(walls, 2, 0));
