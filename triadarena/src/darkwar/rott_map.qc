@@ -462,7 +462,7 @@ void make_rott_map(entity ent, string mapset, int map)
 	ent.message = strdup((string)&rtl.maps[map].name);
 
 	// setup values in terrain_edit
-	terrain_edit(TEREDIT_ENT_SET, ent, sprintf("\"classname\" \"worldspawn\"\n\"message\" \"%s\"\n", ent.message));
+	// terrain_edit(TEREDIT_ENT_SET, ent, sprintf("\"classname\" \"worldspawn\"\n\"message\" \"%s\"\n", ent.message));
 
 	// get level lighting
 	int level_brightness = convert_level_brightness(planespot(walls, 2, 0));
