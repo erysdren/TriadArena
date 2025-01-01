@@ -19,5 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 void prop_disk(void)
 {
-
+	self.solid = SOLID_BBOX;
+	setsize(self, [-32, -32, -32], [32, 32, 0]);
 }
