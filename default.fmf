@@ -1,6 +1,8 @@
 FTEMANIFEST 1
 GAME triadarena
-BASEGAME triadarena
+// BASEGAME "steam:Rise of the Triad Dark War/Rise of the Triad - Dark War"
+BASEGAME "steam:Rise of the Triad - Ludicrous Edition/assets"
+BASEGAME "triadarena"
 NAME "Triad Arena"
 PROTOCOLNAME "TRIAD-ARENA"
 DISABLEHOMEDIR 1
