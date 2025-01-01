@@ -10,8 +10,9 @@ Use at your own risk.
 
 ## Todo
 
-- Add support for loading ROTT:LE mapset files.
-- Add support for using shareware game data instead of registered.
+- [x] Add support for loading ROTT:LE mapset files.
+- [ ] Create package for [Dakkijam: The Precursor](https://steamcommunity.com/sharedfiles/filedetails/?id=3389350415).
+- [ ] Add support for using shareware game data instead of registered.
 
 ## Required Files
 
