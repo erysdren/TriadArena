@@ -318,6 +318,8 @@ static string get_wall_texture(int in)
 		return animwalls[in - 224 + 4];
 	else if ((in >= 242) && (in <= 244))
 		return animwalls[in - 242 + 14];
+	else if ((in >= 512) && (in <= 543))
+		return strcat("wad/wall/", walbs[in - 512]);
 	else
 		return "";
 }
