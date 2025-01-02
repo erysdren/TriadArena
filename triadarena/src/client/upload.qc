@@ -228,7 +228,7 @@ void upload_animwall_texture(string name, int n, float rate)
 	string shader = sprintf("{\nprogram defaultanimwall\n{\nanimclampmap %0.2f ", rate);
 	for (int i = 1; i <= n; i++)
 		shader = sprintf("%s%s ", shader, sprintf("%s%i", name, i));
-	shader = sprintf("%s\n}\n}\n", shader);
+	shader = sprintf("%s\n}\n{\nmap $lightmap\n}\n}\n", shader);
 	shaderforname(name, shader);
 }
 
