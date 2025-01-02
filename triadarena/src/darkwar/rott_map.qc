@@ -49,6 +49,10 @@ static void generate_texcoords(brushface_t *face, vector brush_min, vector brush
 	else
 		face->tdir.z = -1;
 
+	// prevent repetitive corners
+	if (face->planenormal.x < 0 || face->planenormal.y > 0)
+		face->sdir *= -1;
+
 	// biases
 	for (int i = 0; i < 3; i++)
 	{
