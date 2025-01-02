@@ -225,7 +225,7 @@ void upload_animwall_texture(string name, int n, float rate)
 		upload_wall_texture(sprintf("%s%i", name, i));
 
 	// create shader
-	string shader = sprintf("{\n{\nanimclampmap %0.2f ", rate);
+	string shader = sprintf("{\nprogram defaultanimwall\n{\nanimclampmap %0.2f ", rate);
 	for (int i = 1; i <= n; i++)
 		shader = sprintf("%s%s ", shader, sprintf("%s%i", name, i));
 	shader = sprintf("%s\n}\n}\n", shader);
