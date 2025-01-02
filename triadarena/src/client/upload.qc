@@ -327,23 +327,25 @@ void upload_wall_textures(void)
 
 void upload_animwall_textures(void)
 {
-	upload_animwall_texture("FPLACE", 4, 4);
-	upload_animwall_texture("ANIMY", 6, 4);
-	upload_animwall_texture("ANIMR", 6, 4);
-	upload_animwall_texture("ANIMFAC", 4, 4);
-	upload_animwall_texture("ANIMONE", 4, 4);
-	upload_animwall_texture("ANIMTWO", 4, 4);
-	upload_animwall_texture("ANIMTHR", 4, 4);
-	upload_animwall_texture("ANIMFOR", 4, 4);
-	upload_animwall_texture("ANIMGW", 6, 4);
-	upload_animwall_texture("ANIMYOU", 6, 4);
-	upload_animwall_texture("ANIMBW", 6, 4);
-	upload_animwall_texture("ANIMBP", 6, 4);
-	upload_animwall_texture("ANIMCHN", 6, 4);
-	upload_animwall_texture("ANIMFW", 6, 4);
-	upload_animwall_texture("ANIMLAT", 6, 4);
-	upload_animwall_texture("ANIMST", 6, 4);
-	upload_animwall_texture("ANIMRP", 6, 4);
+#define VBLCOUNTER 30.0f
+	upload_animwall_texture("FPLACE", 4, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMY", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMR", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMFAC", 4, VBLCOUNTER / 40.0f);
+	upload_animwall_texture("ANIMONE", 4, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMTWO", 4, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMTHR", 4, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMFOR", 4, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMGW", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMYOU", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMBW", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMBP", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMCHN", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMFW", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMLAT", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMST", 6, VBLCOUNTER / 3.0f);
+	upload_animwall_texture("ANIMRP", 6, VBLCOUNTER / 3.0f);
+#undef VBLCOUNTER
 }
 
 void upload_floor_textures(void)
