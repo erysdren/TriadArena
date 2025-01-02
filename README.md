@@ -8,6 +8,9 @@ which can be found [here](https://github.com/erysdren/TriadArena-Packages).
 This project is **heavily work-in-progress** and no functionality is guaranteed.
 Use at your own risk.
 
+**NOTE**: An OpenGL build of FTEQW is required. DirectX and Vulkan builds are
+unsupported.
+
 ## Todo
 
 - [x] Add support for loading ROTT:LE mapset files.
@@ -16,7 +19,17 @@ Use at your own risk.
 
 ## Required Files
 
-Place these in `triadarena/data/`.
+Triad Arena has limited Steam integration for finding and loading existing
+Rise of the Triad installations. The following games, if installed, will be
+loaded:
+
+- [Rise of the Triad: Dark War](https://store.steampowered.com/app/358410/)
+- [Rise of the Triad: Ludicrous Edition](https://store.steampowered.com/app/1421490/)
+
+If the engine fails to find Steam or you don't have the required games
+installed, you can provide the game data in `triadarena/data/`.
+
+The bare minimum files required for running the game are:
 
 ```
 471a7b77fd03bbdd43a2dec3ca56034981bcab2eff8d4046bfbaa7b57a186b66  darkwar.rtc
