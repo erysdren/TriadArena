@@ -328,25 +328,25 @@ void upload_wall_textures(void)
 
 void upload_animwall_textures(void)
 {
-#define VBLCOUNTER 30.0f
-	upload_animwall_texture("FPLACE", 4, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMY", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMR", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMFAC", 4, VBLCOUNTER / 40.0f);
-	upload_animwall_texture("ANIMONE", 4, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMTWO", 4, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMTHR", 4, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMFOR", 4, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMGW", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMYOU", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMBW", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMBP", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMCHN", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMFW", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMLAT", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMST", 6, VBLCOUNTER / 3.0f);
-	upload_animwall_texture("ANIMRP", 6, VBLCOUNTER / 3.0f);
-#undef VBLCOUNTER
+#define HZ(x) ((1000.0f / 35.0f) / x)
+	upload_animwall_texture("FPLACE", 4, HZ(3.0f));
+	upload_animwall_texture("ANIMY", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMR", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMFAC", 4, HZ(40.0f));
+	upload_animwall_texture("ANIMONE", 4, HZ(3.0f));
+	upload_animwall_texture("ANIMTWO", 4, HZ(3.0f));
+	upload_animwall_texture("ANIMTHR", 4, HZ(3.0f));
+	upload_animwall_texture("ANIMFOR", 4, HZ(3.0f));
+	upload_animwall_texture("ANIMGW", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMYOU", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMBW", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMBP", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMCHN", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMFW", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMLAT", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMST", 6, HZ(3.0f));
+	upload_animwall_texture("ANIMRP", 6, HZ(3.0f));
+#undef HZ
 }
 
 void upload_floor_textures(void)
