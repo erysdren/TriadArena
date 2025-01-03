@@ -36,6 +36,13 @@ The bare minimum files required for running the game are:
 78761bdc78cb2340b71e3b7b320dbe47e3f7dbcd0eb456fc084973acd582edeb  darkwar.wad
 ```
 
+## Credits
+
+- ROTT Central for playtesting and support
+- Spike for the wonderful FTEQW engine
+- id Software for making Quake
+- Apogee Software for making Rise of the Triad
+
 ## License
 
 GNU GPL v2
