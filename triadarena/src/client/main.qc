@@ -165,6 +165,9 @@ void CSQC_UpdateView(float vwidth, float vheight, float notmenu)
 
 	// do render
 	renderscene();
+
+	// draw chat
+	chat_draw([vwidth, vheight]);
 }
 
 void CSQC_Input_Frame(void)
@@ -196,5 +199,20 @@ void CSQC_Parse_Event(void)
 		{
 			break;
 		}
+	}
+}
+
+void CSQC_Parse_Print(string printmsg, float printlvl)
+{
+	float lvl = cvar("msg");
+
+	if (printlvl == PRINT_CHAT)
+	{
+		chat_add(printmsg);
+		print(printmsg);
+	}
+	else if (printlvl >= lvl)
+	{
+		print(printmsg);
 	}
 }

@@ -19,6 +19,7 @@
 
 	client/defs.qc
 	client/upload.qc
+	client/chat.qc
 	client/main.qc
 
 #endlist
