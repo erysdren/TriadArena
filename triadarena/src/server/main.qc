@@ -49,7 +49,7 @@ void ClientKill(void)
 
 void ClientConnect(void)
 {
-
+	bprintf(PRINT_CHAT, "%s joined the game\n", self.netname);
 }
 
 void PutClientInServer(void)
@@ -98,11 +98,12 @@ void SV_ParseClientCommand(string cmd)
 			if (argc >= 2)
 			{
 				int character = stoi(argv(1));
-				if (character >= 0 && character <= 4)
+				if (character >= 0 && character <= 4 && character != self.type)
+				{
 					player_set_character(self, character);
+					bprintf(PRINT_CHAT, "%s is now playing as %s!\n", self.netname, player_character_names[self.type]);
+				}
 			}
-
-			sprint(self, 5, "YOU ARE ", player_character_names[self.type], "!\n");
 			break;
 		}
 
