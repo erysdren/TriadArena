@@ -40,6 +40,7 @@ typedef enum {false, true} bool;
 
 #define printf(...) print(sprintf(__VA_ARGS__))
 #define errorf(...) error(sprintf(__VA_ARGS__))
+#define bprintf(lvl, ...) bprint(lvl, sprintf(__VA_ARGS__))
 #define localcmdf(...) localcmd(sprintf(__VA_ARGS__))
 
 typedef __uint8 uint8_t;
