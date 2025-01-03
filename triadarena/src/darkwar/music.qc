@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1994-1995 Apogee Software, Ltd.
+Copyright (C) 1996-1997 Id Software, Inc.
 Copyright (C) 2023-2025 erysdren (it/its)
 
 This program is free software; you can redistribute it and/or
