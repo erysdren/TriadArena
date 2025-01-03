@@ -1081,7 +1081,7 @@ const float MULTICAST_PVS_R = 5;	/* The multicast message is reliably sent to on
 const float MULTICAST_ONE_R = 7;	/* The multicast message is reliably sent to the player (AND ALL TRACKING SPECTATORS) specified in the msg_entity global. The specified origin is ignored */
 const float MULTICAST_ONE_R_NOSPECS = 10;	/* The multicast message is reliably sent to the player specified in the msg_entity global. The specified origin is ignored */
 #endif
-#if defined(QWSSQC)
+#if defined(QWSSQC) || defined(CSQC)
 const float PRINT_LOW = 0;
 const float PRINT_MEDIUM = 1;
 const float PRINT_HIGH = 2;
