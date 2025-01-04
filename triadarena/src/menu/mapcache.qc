@@ -83,6 +83,47 @@ bool mapcache_save(void)
 
 bool mapcache_build(void)
 {
+	// open search
+	searchhandle sh = search_begin("*.rtc:*.rtcx", SB_MULTISEARCH | SB_NAMESORT, FALSE);
+
+	// find all potential mapsets
+	for (int i = 0; i < search_getsize(sh); i++)
+	{
+		// open rtl to cache mapnames
+		rtl_t *rtl = rtl_open(search_getfilename(sh, i));
+		if (!rtl)
+			continue;
+
+		// cache maps
+		for (int j = 0; j < RTL_NUM_MAPS; j++)
+		{
+			if (rtl.maps[j].used)
+			{
+				// reallocate mapcache array
+				mapcache = memrealloc(mapcache, num_mapcache * sizeof(map_t), (num_mapcache + 1) * sizeof(map_t));
+
+				// setup mapcache values
+				mapcache[num_mapcache].package = search_getfilename(sh, i);
+				mapcache[num_mapcache].name = sprintf("%s_%i.map", search_getfilename(sh, i), j);
+				mapcache[num_mapcache].title = strdup((string)rtl.maps[j].name);
+
+				// advance
+				num_mapcache++;
+			}
+		}
+
+		// clean up
+		rtl_close(rtl);
+	}
+
+	// clean up
+	search_end(sh);
+	return true;
+}
+
+#if 0
+bool mapcache_build(void)
+{
 	// check all packages
 	for (int i = 0; i < 256; i++)
 	{
@@ -142,6 +183,7 @@ bool mapcache_build(void)
 
 	return true;
 }
+#endif
 
 void mapcache_clear(void)
 {
