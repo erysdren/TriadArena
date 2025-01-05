@@ -580,7 +580,7 @@ void make_rott_map(entity ent, string mapset, int map)
 
 				// get sprite height
 				int infotile = planespot(infos, x, y);
-				float sprite_height = get_sprite_height(infotile, level_height);
+				float sprite_height = get_sprite_height(infotile, level_height) + 32;
 
 				// set origin
 				setorigin(e, [(y * 64) + 32, (x * 64) + 32, sprite_height]);
