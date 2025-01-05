@@ -157,8 +157,8 @@ void CSQC_UpdateView(float vwidth, float vheight, float notmenu)
 #endif
 
 	// setup other properties
-	setproperty(VF_DRAWENGINESBAR, FALSE);
-	setproperty(VF_DRAWCROSSHAIR, FALSE);
+	setproperty(VF_DRAWENGINESBAR, TRUE);
+	setproperty(VF_DRAWCROSSHAIR, TRUE);
 	setproperty(VF_DRAWWORLD, TRUE);
 
 	// add entities
