@@ -16,11 +16,20 @@
 	darkwar/rott_map.qc
 
 	server/defs.qc
+	server/subs.qc
+	server/combat.qc
+	server/items.qc
+	server/weapons.qc
+	server/world.qc
+	server/client.qc
+	server/spectate.qc
 	server/player.qc
-	server/main.qc
+	server/doors.qc
+	server/buttons.qc
+	server/triggers.qc
+	server/plats.qc
+	server/misc.qc
 
-	server/info_player_start.qc
-	server/prop_disk.qc
-	server/worldspawn.qc
+	server/server.qc
 
 #endlist
