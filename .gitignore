@@ -5,12 +5,14 @@ untracked/
 
 /fteqw64.exe
 
+/*.pem
 /*.bat
 /*.dll
 /*.so
 /*.lst
 /*.sh
 /conhistory.txt
+/id1/
 /triadarena/RottEX.kpf
 /triadarena/fte.cfg
 /triadarena/config.cfg
