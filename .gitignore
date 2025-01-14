@@ -1,6 +1,7 @@
 untracked/
 
 /fteqw-sdl2
+/fteqw-sv
 /fteqw64
 
 /fteqw64.exe
@@ -11,6 +12,7 @@ untracked/
 /*.so
 /*.lst
 /*.sh
+/*.log
 /conhistory.txt
 /id1/
 /triadarena/RottEX.kpf
@@ -22,6 +24,7 @@ untracked/
 /triadarena/saves/
 /triadarena/data/
 /triadarena/dlcache/
+/triadarena/csprogsvers/
 /triadarena/screen_recording.mp4
 /triadarena/screenshots/
 /triadarena/ssqccore.txt
