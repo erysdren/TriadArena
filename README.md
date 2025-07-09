@@ -8,8 +8,10 @@ which can be found [here](https://github.com/erysdren/TriadArena-Packages).
 This project is **heavily work-in-progress** and no functionality is guaranteed.
 Use at your own risk.
 
-**NOTE**: An OpenGL build of FTEQW is required. DirectX and Vulkan builds are
-unsupported.
+Please see [BUILDING.md](./BUILDING.md) for information on building the game
+from the source code. Otherwise you can check out the
+[Releases](https://github.com/erysdren/TriadArena/releases) section for
+precompiled builds.
 
 ## Todo
 

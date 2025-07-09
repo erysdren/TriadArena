@@ -1,32 +1,50 @@
-untracked/
+# build folders
+build*/
 
-/fteqw-sdl2
-/fteqw-sv
-/fteqw64
+# cmake user presets
+CMakeUserPresets.json
 
-/fteqw64.exe
+# local files
+untracked*/
 
-/*.pem
-/*.bat
-/*.dll
-/*.so
-/*.lst
-/*.sh
-/*.log
-/conhistory.txt
-/id1/
-/triadarena/RottEX.kpf
-/triadarena/fte.cfg
-/triadarena/config.cfg
-/triadarena/*.sav
-/triadarena/*.lno
-/triadarena/csqccore.txt
-/triadarena/saves/
-/triadarena/data/
-/triadarena/dlcache/
-/triadarena/csprogsvers/
-/triadarena/screen_recording.mp4
-/triadarena/screenshots/
-/triadarena/ssqccore.txt
-/triadarena/video/
-/maptimes.txt
+# external game data
+game/id1/
+game/lq1/
+
+# compiled packages
+game/triadarena/*.pak
+game/triadarena/*.pk3
+game/triadarena/*.zip
+
+# compiled binaries
+game/bin/
+game/*.x86
+game/*.x86_64
+game/*.exe
+game/*.dll
+game/*.so
+
+# random files made by the engine
+game/*.log
+game/*.lst
+game/*.txt
+game/*.pem
+
+# user created files
+game/triadarena/csprogsvers/
+game/triadarena/data/
+game/triadarena/dlcache/
+game/triadarena/saves/
+game/triadarena/screenshots/
+game/triadarena/autoexec.cfg
+game/triadarena/config.cfg
+game/triadarena/csqccore.txt
+game/triadarena/ssqccore.txt
+
+# generated from build process
+game/triadarena/*.dat
+game/triadarena/*.lno
+
+# generated from CMakeLists.txt
+source/shared/fteextensions.qc
+source/*.src
