@@ -17,3 +17,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+
+// bleh
+const float PRINT_LOW = 0;
+const float PRINT_MEDIUM = 1;
+const float PRINT_HIGH = 2;
+const float PRINT_CHAT = 3;
