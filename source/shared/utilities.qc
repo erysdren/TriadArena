@@ -27,23 +27,3 @@ string strdup(string s)
 {
 	return sprintf("%s", s);
 }
-
-__variant *memrealloc(__variant *ptr, int oldsize, int newsize)
-{
-	if (!newsize)
-	{
-		memfree(ptr);
-		return __NULL__;
-	}
-	else if (!ptr)
-	{
-		return memalloc(newsize);
-	}
-	else
-	{
-		void *ret = memalloc(newsize);
-		memcpy(ret, ptr, oldsize > newsize ? newsize : oldsize);
-		memfree(ptr);
-		return ret;
-	}
-}
