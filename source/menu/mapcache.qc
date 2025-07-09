@@ -39,7 +39,7 @@ bool mapcache_load(void)
 	for (int i = 0; i < root.length; i++)
 	{
 		// reallocate mapcache array
-		mapcache = memrealloc(mapcache, num_mapcache * sizeof(map_t), (num_mapcache + 1) * sizeof(map_t));
+		mapcache = memrealloc(mapcache, (num_mapcache + 1) * sizeof(map_t));
 
 		// read values
 		mapcache[num_mapcache].name = root.a[i].name;
@@ -100,7 +100,7 @@ bool mapcache_build(void)
 			if (rtl.maps[j].used)
 			{
 				// reallocate mapcache array
-				mapcache = memrealloc(mapcache, num_mapcache * sizeof(map_t), (num_mapcache + 1) * sizeof(map_t));
+				mapcache = memrealloc(mapcache, (num_mapcache + 1) * sizeof(map_t));
 
 				// setup mapcache values
 				mapcache[num_mapcache].package = search_getfilename(sh, i);
@@ -162,7 +162,7 @@ bool mapcache_build(void)
 				if (rtl.maps[k].used)
 				{
 					// reallocate mapcache array
-					mapcache = memrealloc(mapcache, num_mapcache * sizeof(map_t), (num_mapcache + 1) * sizeof(map_t));
+					mapcache = memrealloc(mapcache, (num_mapcache + 1) * sizeof(map_t));
 
 					// setup mapcache values
 					mapcache[num_mapcache].package = package_title;
